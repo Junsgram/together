@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import config.DBConnection;
 import domain.user.dto.EditReqDto;
@@ -85,7 +86,7 @@ public class UserDao {
 		String query = "insert into member (id, pw1, pw2, email, call1, call2, call3, zipcode, addr1, addr2, ofile, dogname, birthday)"
 					+" values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
-			PreparedStatement psmt = conn.prepareStatement(query);
+			psmt = conn.prepareStatement(query);
 			psmt.setString(1, joinDto.getId());
 			psmt.setString(2, joinDto.getPw1());
 			psmt.setString(3, joinDto.getPw2());
@@ -103,6 +104,10 @@ public class UserDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (conn!=null && psmt!=null) {
+				DBConnection.close(conn, psmt);
+			}
 		}
 		return result;
 	}
@@ -110,10 +115,9 @@ public class UserDao {
 	//회원정보 수정 메소드
 	public int editMember(EditReqDto editDto) {
 		int result = 0;
-		String query = "update member set pw1=?, pw2=?, email=?, call1=?, call2=?, "+
-				"call3=?, zipcode=?, addr1=?, addr2=?, ofile=?, dogname=?, birthday=? where id=?";
+		String query = "update member set pw1=?, pw2=?, email=?, call1=?, call2=?, call3=?, zipcode=?, addr1=?, addr2=?, ofile=?, dogname=?, birthday=? where id=?";
 		try {
-			PreparedStatement psmt = conn.prepareStatement(query);
+			psmt = conn.prepareStatement(query);
 			psmt.setString(1, editDto.getPw1());
 			psmt.setString(2, editDto.getPw2());
 			psmt.setString(3, editDto.getEmail());
@@ -126,12 +130,55 @@ public class UserDao {
 			psmt.setString(10, editDto.getOfile());
 			psmt.setString(11, editDto.getDogname());
 			psmt.setString(12, editDto.getBirthday());
-			psmt.setString(13,  editDto.getId());
+			psmt.setString(13, editDto.getId());
+			System.out.println(query);
 			result = psmt.executeUpdate();
+			
+			//user객체 생성하기
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			if (conn!=null && psmt!=null) {
+				DBConnection.close(conn, psmt);
+			}
 		}		
 		return result;
+	}
+	public User findByIdReturnUser(String userId) {
+		User user = null;
+		String query = "select * from member where id=?";
+		try {
+			psmt = conn.prepareStatement(query);
+			psmt.setString(1, userId);
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				user=User.builder()
+						.id(rs.getString("id"))
+						.pw1(rs.getString("pw1"))
+						.pw2(rs.getString("pw2"))
+						.email(rs.getString("email"))
+						.call1(rs.getInt("call1"))
+						.call2(rs.getInt("call2"))
+						.call3(rs.getInt("call3"))
+						.zipcode(rs.getString("zipcode"))
+						.addr1(rs.getString("addr1"))
+						.addr2(rs.getString("addr2"))
+						.ofile(rs.getString("ofile"))
+						.dogname(rs.getString("dogname"))
+						.userrole(rs.getString("userrole"))
+						.userpoint(rs.getInt("userpoint"))
+						.birthday(rs.getDate("birthday"))
+						.build();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (conn!=null && psmt!=null && rs!=null) {
+				DBConnection.close(conn, psmt, rs);
+			}
+		}
+		return user;
 	}
 }

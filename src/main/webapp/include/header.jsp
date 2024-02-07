@@ -29,7 +29,7 @@
 	  			<a class="nav-link" href="<%=request.getContextPath()%>/user?cmd=logout">로그아웃</a>
 			</li>
 			<li class="nav-item">
-	  			<a class="nav-link" href="<%=request.getContextPath()%>/user?cmd=editForm">내 정보 수정</a>
+	  			<a class="nav-link"  href="javascript:transEditForm('${sessionScope.principal.id}')">내 정보 수정</a>
 			</li> 
 			<li class="nav-item">
        			 <a class="nav-link" href="/together/house?cmd=list&page=0"> 숙소 </a>
@@ -60,4 +60,25 @@
 </nav>
 <br>
 
+<!-- a태그를 클릭할 때 실행되는 함수 -->
+<!-- form태그 만들고, submit까지 실행 -->
+<!-- 내 정보 수정 누를 때 아이디값 담아서 보내주기 위해 -->
+<script>
+	function transEditForm(id){
+		let form = document.createElement('form');
+		
+		let input = document.createElement('input');
+		input.setAttribute('type', 'hidden');
+		input.setAttribute('name', 'userId');
+		input.setAttribute('value', id);
+		
+		form.appendChild(input);
+		form.setAttribute('method', 'post');
+		form.setAttribute('action', '<%=request.getContextPath()%>/user?cmd=editForm');
+		document.body.appendChild(form);
+		form.submit();
+	}
+
+</script>
+<div class="container">
 <div class="container">

@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+
 public class User {
 	private String id;
 	private String pw1;

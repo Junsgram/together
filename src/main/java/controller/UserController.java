@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import com.oreilly.servlet.MultipartRequest;
 
@@ -49,6 +51,9 @@ public class UserController extends HttpServlet {
 			String userPass = req.getParameter("userPass");
 			String remember = req.getParameter("remember");
 			
+			System.out.println(userId);
+			System.out.println(userPass);
+			
 			LoginReqDto logDto = new LoginReqDto();
 			logDto.setId(userId);
 			logDto.setPw2(userPass);
@@ -67,6 +72,7 @@ public class UserController extends HttpServlet {
 					res.addCookie(cookie);
 				}
 			session.setAttribute("principal", user);
+			session.setAttribute("userId", userId);
 			System.out.println(session.getAttribute("principal"));
 			req.getRequestDispatcher("index.jsp").forward(req, res);
 			} else {
@@ -104,22 +110,23 @@ public class UserController extends HttpServlet {
 			String saveDirectory = req.getServletContext().getRealPath("user/profile_img");
 			System.out.println(saveDirectory);
 			
-			 int maxProfileSize = 1024*1000; //MultipartRequest 객체 생성
-			 //enctype="multipart"인 요청의 값 받아오기할 때는 multipartRequest객체로 해야한다.
-			 MultipartRequest multiReq = new MultipartRequest(req, saveDirectory, maxProfileSize, "utf-8"); 
+			int maxProfileSize = 1024*1000; //MultipartRequest 객체 생성
+			//enctype="multipart"인 요청의 값 받아오기할 때는 multipartRequest객체로 해야한다.
+			MultipartRequest multiReq = new MultipartRequest(req, saveDirectory, maxProfileSize, "utf-8"); 
 			 
-			 String newFileName = "default_profile_img.jpg";
-			 String fileName =multiReq.getFilesystemName("photo"); 
+			String newFileName = "default_profile_img.jpg";
+			String fileName =multiReq.getFilesystemName("photo"); 
 			
-			 if (fileName!=null) {
+			if (fileName!=null) {
 				String exe =fileName.substring(fileName.lastIndexOf(".")); 
 				//서버 컴퓨터에 저장될 사진의 파일 이름 
 				String now = new SimpleDateFormat("yyyyMMdd_Hmss").format(new Date()); 
 				newFileName = now+exe; //파일 이름 변경 
-			 }
-			 File oldFile = new File(saveDirectory+File.separator+fileName); 
-			 File newFile = new File(saveDirectory+File.separator+newFileName); 
-			 oldFile.renameTo(newFile);
+				
+			}
+			File oldFile = new File(saveDirectory+File.separator+fileName); 
+			File newFile = new File(saveDirectory+File.separator+newFileName); 
+			oldFile.renameTo(newFile);
 
 			 //다른 input값 받기 
 			 String userId = multiReq.getParameter("userId"); 
@@ -158,10 +165,17 @@ public class UserController extends HttpServlet {
 				 Script.back("회원가입에 실패했습니다.", res); 
 			 }
 		}
-		//회원정보 수정 요청
+		//회원정보 수정 페이지 요청
 		else if (cmd.equals("editForm")) {
+			String userId = req.getParameter("userId");
+			User user = userService.editValue(userId);
+			HttpSession session = req.getSession();
+			if (user!=null) {
+				session.setAttribute("principal", user);
+			}
 			req.getRequestDispatcher("/user/editForm.jsp").forward(req, res);
 		}
+		
 		//회원정보 수정 post 요청
 		else if(cmd.equals("edit")) {
 			System.out.println("회원정보수정요청");
@@ -169,24 +183,27 @@ public class UserController extends HttpServlet {
 			String saveDirectory = req.getServletContext().getRealPath("user/profile_img");
 			System.out.println(saveDirectory);
 			
-			 int maxProfileSize = 1024*1000; //MultipartRequest 객체 생성
-			 //enctype="multipart"인 요청의 값 받아오기할 때는 multipartRequest객체로 해야한다.
-			 MultipartRequest multiReq = new MultipartRequest(req, saveDirectory, maxProfileSize, "utf-8"); 
-			 
-			 String newFileName = "default_profile_img.jpg";
-			 String fileName =multiReq.getFilesystemName("photo"); 
+			int maxProfileSize = 1024*1000; //MultipartRequest 객체 생성
+			//enctype="multipart"인 요청의 값 받아오기할 때는 multipartRequest객체로 해야한다.
+			MultipartRequest multiReq = new MultipartRequest(req, saveDirectory, maxProfileSize, "utf-8"); 
+			//기존 프로필 사진의 파일 이름 
+			String originFileName = "";
 			
-			 if (fileName!=null) {
+			//바꾼 프로필 사진의 파일 이름
+			String changedFileName =multiReq.getFilesystemName("photo"); 
+			
+			if (fileName!=null) {
 				String exe =fileName.substring(fileName.lastIndexOf(".")); 
-				//서버 컴퓨터에 저장될 사진의 파일 이름 
-				String now = new SimpleDateFormat("yyyyMMdd_Hmss").format(new Date()); 
-				newFileName = now+exe; //파일 이름 변경 
-			 }
-			 File oldFile = new File(saveDirectory+File.separator+fileName); 
-			 File newFile = new File(saveDirectory+File.separator+newFileName); 
-			 oldFile.renameTo(newFile);
-
+			//서버 컴퓨터에 저장될 사진의 파일 이름 
+			String now = new SimpleDateFormat("yyyyMMdd_Hmss").format(new Date()); 
+			newFileName = now+exe; //파일 이름 변경 
+			}
+			File oldFile = new File(saveDirectory+File.separator+fileName); 
+			File newFile = new File(saveDirectory+File.separator+newFileName); 
+			oldFile.renameTo(newFile);
+			
 			 //다른 input값 받기  
+			 String userId = multiReq.getParameter("userId");
 			 String userPass1 = multiReq.getParameter("userPass1"); 
 			 String userPass2 = multiReq.getParameter("userPass2"); 
 			 String email = multiReq.getParameter("email"); 
@@ -199,10 +216,10 @@ public class UserController extends HttpServlet {
 			 String bday = multiReq.getParameter("bday");
 			 String dogName = multiReq.getParameter("dogName");
 			  
-			 //JoinReqDto객체 생성하기 
+			 //EditReqDto객체 생성하기 
 			 EditReqDto editDto = new EditReqDto();
-
- 
+			
+			 editDto.setId(userId);
 			 editDto.setPw1(userPass1); 
 			 editDto.setPw2(userPass2);
 			 editDto.setEmail(email); 
@@ -217,16 +234,15 @@ public class UserController extends HttpServlet {
 			 editDto.setDogname(dogName); 
 			 
 			 int result = userService.edit(editDto); 
+			
 			 if (result==1) { 
 				 Script.alertMsg("회원 정보 수정이 완료되었습니다.", "/together/index.jsp", res);
+				 
 			 }else { 
 				 Script.back("회원 정보 수정에 실패했습니다.", res); 
 			 }
 		}
-		}
-			
-
-
+	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		process(request, response);

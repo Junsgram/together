@@ -1,7 +1,5 @@
 package domain.user.dto;
 
-import java.util.Date;
-
 import lombok.Data;
 
 @Data
