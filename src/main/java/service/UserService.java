@@ -1,5 +1,7 @@
 package service;
 
+import java.sql.ResultSet;
+
 import domain.user.User;
 import domain.user.UserDao;
 import domain.user.dto.EditReqDto;
@@ -33,6 +35,15 @@ public class UserService {
 	
 	//4. 회원 정보 수정 메소드
 	public int edit(EditReqDto editDto) {
-		return userDao.editMember(editDto);
+
+		int result = userDao.editMember(editDto);
+		System.out.println(result);
+		return result;
 	}
+	
+	//5. 회원 정보 수정할 때 id값으로 찾아서 user객체 리턴하는 메소드
+	public User editValue(String userId) {
+		return userDao.findByIdReturnUser(userId);
+	}
+
 }
