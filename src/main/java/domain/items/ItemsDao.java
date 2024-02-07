@@ -118,14 +118,16 @@ public class ItemsDao {
 		}
 		return item;
 	}
-	public int deleteById(String id) {
+	public int deleteById(int id) {
 		int result=0;
-		String query = "delete from items where id=?";
+		String query = "delete from items where num=?";
 		PreparedStatement psmt=null;
 	Connection conn = DBConnection.getConnection(); 
 		try {
 			psmt = conn.prepareStatement(query);
-			psmt.setString(1, id);
+			psmt.setInt(1, id);
+			System.out.println(result);
+			System.out.println(id);
 			result = psmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
