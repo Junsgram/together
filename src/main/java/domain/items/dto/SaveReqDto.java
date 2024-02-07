@@ -15,4 +15,5 @@ private String scontent;
 private String lcontent;
 private int price;
 private String ofile;
+private int quantity;
 }

@@ -31,13 +31,11 @@ public class itemsController extends HttpServlet {
     	String cmd = req.getParameter("cmd");
     	System.out.println(cmd);
     	ItemsService itemsService = new ItemsService();
-    	//삭제, 결제화면, 리스트-사진, 장바구니(세션? db? 미리 추가해둬야함.)
+    	//단일? 결제화면-결제전 결제 정보를 보여주자., 장바구니(db)
     	if(cmd.equals("itemslist")) {
     		//전체 상품 뿌려주기.
     		List<Items> items = itemsService.items_list();
     		req.setAttribute("items", items);
-    		System.out.println("aaaaaaaaa");
-    		System.out.println(req.getAttribute("items"));
     		req.getRequestDispatcher("item/itemslist.jsp")
     		.forward(req, res);
     	}else if(cmd.equals("save")) {
@@ -54,6 +52,7 @@ public class itemsController extends HttpServlet {
     		.forward(req, res);
     	}else if(cmd.equals("add_cart")) {
     		System.out.println("장바구니에 추가");
+    		//교체예정
     		//입력스트림생성
     		BufferedReader br = req.getReader();
     		String itemId = br.readLine();
@@ -68,10 +67,13 @@ public class itemsController extends HttpServlet {
     		req.getRequestDispatcher("item/detail.jsp")
     		.forward(req, res);
     	}else if(cmd.equals("delete")) {
-    		String id = req.getParameter("item_id");
-    		int result = itemsService.delete(id);
-		
-		  if(result == 1) { res.sendRedirect(id); }else { System.out.println(""); }
+    		int num = Integer.parseInt(req.getParameter("item_num"));
+    		int result = itemsService.delete(num);
+    		System.out.println(result);
+		  if(result == 1) {
+			  res.sendRedirect("items?cmd=itemslist");
+		  }
+		  else { System.out.println("삭제실패"); }
 		 
     	}
     	
