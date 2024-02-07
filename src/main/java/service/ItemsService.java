@@ -23,7 +23,7 @@ public class ItemsService {
 	public int delete(int num) {
 		return itemsDao.deleteById(num);
 	}
-	
+
 	
 
 }

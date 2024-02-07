@@ -1,84 +1,97 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-</head>
-<body>
-
-<nav class="navbar navbar-expand-md bg-dark navbar-dark">
-  <a class="navbar-brand" href="/together/">투개더</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <ul class="navbar-nav">
-    <c:choose>
-    	<c:when test="${sessionScope.principal!=null}">
-	    	<li class="nav-item">
-	  			<a class="nav-link" href="<%=request.getContextPath()%>/user?cmd=logout">로그아웃</a>
-			</li>
-			<li class="nav-item">
-	  			<a class="nav-link"  href="javascript:transEditForm('${sessionScope.principal.id}')">내 정보 수정</a>
-			</li> 
-			<li class="nav-item">
-       			 <a class="nav-link" href="/together/house?cmd=list&page=0"> 숙소 </a>
-      		</li>
-      		<li class="nav-item">
-				<a class="nav-link" href="http://localhost:8090/together/items?cmd=itemslist"> 상품 </a>
-			</li>
-    	</c:when>
-    	<c:otherwise>
-			<li class="nav-item">
-	  			<a class="nav-link" href="<%=request.getContextPath()%>/user?cmd=loginForm">로그인</a>
-			</li>
-	    	<li class="nav-item">
-	  			<a class="nav-link" href="<%=request.getContextPath()%>/user?cmd=joinForm">회원가입</a>
-			</li>
-			<li class="nav-item">
-		        <a class="nav-link" href="/together/house?cmd=list&page=0"> 숙소 </a>
-		    </li>
-		    <li class="nav-item">
-				<a class="nav-link" href="http://localhost:8090/together/items?cmd=itemslist"> 상품 </a>
-			</li>
-    	</c:otherwise>
-    </c:choose>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Together Shop</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="<%=request.getContextPath()%>/css/styles.css" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <!-- Navigation-->˛
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="/together">투개더</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    	<c:choose>
+                    		<c:when test ="${sessionScope.principal!=null}">
+                    			<li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/user?cmd=logout"></a>로그아웃</li>
+                    			<li class="nav-item"><a class="nav-link" href="javascript:transEditForm('${sessionScope.principal.id}')">내정보 수정</a></li>
+                    		</c:when>
+                    		<c:otherwise>
+	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/user?cmd=loginForm"></a>로그인</li>
+	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/user?cmd=joinForm"></a>회원가입</li>
+	                        </c:otherwise>
+	                    </c:choose>
+	   
+	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/items?cmd=itemslist"></a>상품</li>
+	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/house?cmd=list&page=0"></a>숙소</li>
+	                        <li class="nav-item dropdown">
+	                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+	                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+	                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+	                                <li><hr class="dropdown-divider" /></li>
+	                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+	                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+	                            </ul>
+	                        </li>
+                        
+                    </ul>
+                    <form class="d-flex">
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Shop in style</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+                </div>
+            </div>
+        </header>
+        <!-- Section-->
+        <!--  main 부분  -->
+        
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+        <script>
+			function transEditForm(id){
+				let form = document.createElement('form');
+				
+				let input = document.createElement('input');
+				input.setAttribute('type', 'hidden');
+				input.setAttribute('name', 'userId');
+				input.setAttribute('value', id);
+				
+				form.appendChild(input);
+				form.setAttribute('method', 'post');
+				form.setAttribute('action', '<%=request.getContextPath()%>/user?cmd=editForm');
+				document.body.appendChild(form);
+				form.submit();
+			}
 		
-		
-    </ul>
-  </div>  
-</nav>
-<br>
-
-<!-- a태그를 클릭할 때 실행되는 함수 -->
-<!-- form태그 만들고, submit까지 실행 -->
-<!-- 내 정보 수정 누를 때 아이디값 담아서 보내주기 위해 -->
-<script>
-	function transEditForm(id){
-		let form = document.createElement('form');
-		
-		let input = document.createElement('input');
-		input.setAttribute('type', 'hidden');
-		input.setAttribute('name', 'userId');
-		input.setAttribute('value', id);
-		
-		form.appendChild(input);
-		form.setAttribute('method', 'post');
-		form.setAttribute('action', '<%=request.getContextPath()%>/user?cmd=editForm');
-		document.body.appendChild(form);
-		form.submit();
-	}
-
-</script>
-<div class="container">
-<div class="container">
+		</script>
+       
+ 
