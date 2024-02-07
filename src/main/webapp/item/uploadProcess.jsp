@@ -23,12 +23,14 @@
 	String title = mr.getParameter("title");
 	String scontent = mr.getParameter("scontent");
 	String lcontent = mr.getParameter("lcontent");
+	int price = Integer.parseInt(mr.getParameter("price"));
 	int quantity = Integer.parseInt(mr.getParameter("quantity"));
 	SaveReqDto dto = new SaveReqDto();
 	dto.setTitle(title);
 	dto.setScontent(scontent);
 	dto.setLcontent(lcontent);
 	dto.setOfile(newFilename);
+	dto.setPrice(price);
 	ItemsDao dao = new ItemsDao();
 	int result = dao.insert(dto);
 	response.sendRedirect("items?cmd=itemslist");
