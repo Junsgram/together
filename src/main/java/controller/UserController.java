@@ -178,29 +178,39 @@ public class UserController extends HttpServlet {
 		
 		//회원정보 수정 post 요청
 		else if(cmd.equals("edit")) {
-			System.out.println("회원정보수정요청");
+			/* System.out.println("회원정보수정요청"); */
 			// 입력된 데이터 받기
 			String saveDirectory = req.getServletContext().getRealPath("user/profile_img");
-			System.out.println(saveDirectory);
+			/* System.out.println(saveDirectory); */
 			
 			int maxProfileSize = 1024*1000; //MultipartRequest 객체 생성
 			//enctype="multipart"인 요청의 값 받아오기할 때는 multipartRequest객체로 해야한다.
 			MultipartRequest multiReq = new MultipartRequest(req, saveDirectory, maxProfileSize, "utf-8"); 
 			//기존 프로필 사진의 파일 이름 
-			String originFileName = "";
-			
+			/*
+			 * String originFileName = multiReq.getParameter("originPic");
+			 * System.out.println("aaaaaaa" + originFileName);
+			 */
+			String newFileName="";
 			//바꾼 프로필 사진의 파일 이름
-			String changedFileName =multiReq.getFilesystemName("photo"); 
-			
-			if (fileName!=null) {
-				String exe =fileName.substring(fileName.lastIndexOf(".")); 
-			//서버 컴퓨터에 저장될 사진의 파일 이름 
-			String now = new SimpleDateFormat("yyyyMMdd_Hmss").format(new Date()); 
-			newFileName = now+exe; //파일 이름 변경 
+			String changedFileName =multiReq.getFilesystemName("photo");
+			System.out.println(changedFileName);
+			if(changedFileName==null) {
+				newFileName= multiReq.getParameter("originPic");
 			}
-			File oldFile = new File(saveDirectory+File.separator+fileName); 
-			File newFile = new File(saveDirectory+File.separator+newFileName); 
-			oldFile.renameTo(newFile);
+			else {
+				String exe =changedFileName.substring(changedFileName.lastIndexOf(".")); 
+				//서버 컴퓨터에 저장될 사진의 파일 이름 
+				String now = new SimpleDateFormat("yyyyMMdd_Hmss").format(new Date()); 
+				newFileName = now+exe; //파일 이름 변경 
+				
+				File oldFile = new File(saveDirectory+File.separator+changedFileName); 
+				File newFile = new File(saveDirectory+File.separator+newFileName); 
+				oldFile.renameTo(newFile);
+			}
+			
+			System.out.println(newFileName);
+			
 			
 			 //다른 input값 받기  
 			 String userId = multiReq.getParameter("userId");
