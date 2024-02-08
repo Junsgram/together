@@ -1,4 +1,4 @@
-package domain.board.House;
+package domain.board.Diary;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +14,7 @@ import domain.board.House.DTO.ListReqDTO;
 import domain.board.House.DTO.ViewReqDTO;
 import domain.board.House.DTO.WriteReqDTO;
 
-public class HouseDAO {
+public class DiaryDAO {
 
 	//method
 	//게시글 등록
@@ -23,8 +23,8 @@ public class HouseDAO {
 		//1.오라클 접속
 		Connection con = DBConnection.getConnection();
 		//2.쿼리문 작성 및 객체 생성
-		String sql = "insert into house(num,housename,id,scontent,lcontent,ofile)"
-				+ " values(together_house_seq.nextval, ?,?,?,?,?)";
+		String sql = "insert into diary(num,housename,id,scontent,lcontent,ofile)"
+				+ " values(together_diary_seq.nextval, ?,?,?,?,?)";
 		//동적쿼리문
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -54,21 +54,6 @@ public class HouseDAO {
 			}
 		}
 		return result;
-	}
-	//게시글 작성 후 상세보기로 페이지 이동
-	public int detailNum() {
-		Connection con = DBConnection.getConnection();
-		String sql = "select together_house_seq.currval from dual";
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 	//목록보기 로직
 	public List<ListReqDTO> list(int page) {

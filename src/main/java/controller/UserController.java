@@ -133,9 +133,9 @@ public class UserController extends HttpServlet {
 			 String userPass1 = multiReq.getParameter("userPass1"); 
 			 String userPass2 = multiReq.getParameter("userPass2"); 
 			 String email = multiReq.getParameter("email"); 
-			 int call1 = Integer.parseInt(multiReq.getParameter("call1")); 
-			 int call2 = Integer.parseInt(multiReq.getParameter("call2")); 
-			 int call3 = Integer.parseInt(multiReq.getParameter("call3")); 
+			 String call1 = multiReq.getParameter("call1"); 
+			 String call2 = multiReq.getParameter("call2"); 
+			 String call3 = multiReq.getParameter("call3"); 
 			 String zipcode = multiReq.getParameter("zipcode"); 
 			 String addr1 = multiReq.getParameter("addr1");
 			 String addr2 = multiReq.getParameter("addr2"); 
@@ -199,6 +199,11 @@ public class UserController extends HttpServlet {
 				newFileName= multiReq.getParameter("originPic");
 			}
 			else {
+				String change_img = multiReq.getParameter("originPic");
+	    		File delete_img = new File(saveDirectory + File.separator + change_img);
+	    		if(delete_img.exists()) {
+	    			delete_img.delete();
+	    		}
 				String exe =changedFileName.substring(changedFileName.lastIndexOf(".")); 
 				//서버 컴퓨터에 저장될 사진의 파일 이름 
 				String now = new SimpleDateFormat("yyyyMMdd_Hmss").format(new Date()); 
@@ -217,9 +222,9 @@ public class UserController extends HttpServlet {
 			 String userPass1 = multiReq.getParameter("userPass1"); 
 			 String userPass2 = multiReq.getParameter("userPass2"); 
 			 String email = multiReq.getParameter("email"); 
-			 int call1 = Integer.parseInt(multiReq.getParameter("call1")); 
-			 int call2 = Integer.parseInt(multiReq.getParameter("call2")); 
-			 int call3 = Integer.parseInt(multiReq.getParameter("call3")); 
+			 String call1 = multiReq.getParameter("call1"); 
+			 String call2 = multiReq.getParameter("call2"); 
+			 String call3 = multiReq.getParameter("call3"); 
 			 String zipcode = multiReq.getParameter("zipcode"); 
 			 String addr1 = multiReq.getParameter("addr1");
 			 String addr2 = multiReq.getParameter("addr2"); 

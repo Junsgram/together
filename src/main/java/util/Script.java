@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 public class Script {
 	//경고창 출력 후 이전 페이지로 이동
 	public static void back(String msg, HttpServletResponse response) {
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
 		try {
 			PrintWriter out = response.getWriter();
 			out.print("<script>");
@@ -24,6 +26,8 @@ public class Script {
 	
 	//경고창 출력 후 지정된 경로로 페이지 이동
 	public static void alertMsg(String msg, String url, HttpServletResponse response) {
+		response.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
 		try {
 			PrintWriter out = response.getWriter();
 			out.print("<script>");

@@ -28,17 +28,17 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                     	<c:choose>
                     		<c:when test ="${sessionScope.principal!=null}">
-                    			<li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/user?cmd=logout"></a>로그아웃</li>
+                    			<li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/user?cmd=logout">로그아웃</a></li>
                     			<li class="nav-item"><a class="nav-link" href="javascript:transEditForm('${sessionScope.principal.id}')">내정보 수정</a></li>
                     		</c:when>
                     		<c:otherwise>
-	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/user?cmd=loginForm"></a>로그인</li>
-	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/user?cmd=joinForm"></a>회원가입</li>
+	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/user?cmd=loginForm">로그인</a></li>
+	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/user?cmd=joinForm">회원가입</a></li>
 	                        </c:otherwise>
 	                    </c:choose>
 	   
-	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/items?cmd=itemslist"></a>상품</li>
-	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/house?cmd=list&page=0"></a>숙소</li>
+	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/items?cmd=itemslist">상품</a></li>
+	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/house?cmd=list&page=0">숙소</a></li>
 	                        <li class="nav-item dropdown">
 	                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
 	                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -61,14 +61,7 @@
             </div>
         </nav>
         <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Shop in style</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
-                </div>
-            </div>
-        </header>
+
         <!-- Section-->
         <!--  main 부분  -->
         
