@@ -21,6 +21,7 @@ import util.Script;
 import domain.board.House.DTO.ListReqDTO;
 import domain.board.House.DTO.ViewReqDTO;
 import domain.board.House.DTO.WriteReqDTO;
+import domain.user.User;
 import domain.board.House.DTO.EditReqDTO;
 
 
@@ -48,9 +49,16 @@ public class HouseController extends HttpServlet {
     	//게시글 등록 시 게시판 페이지로 이동
     	if(cmd.equals("write")) {
     		//filter로 페이지 close진행 예정으로 내부페이지 이동 가능한 getRequestDispatcher로 진행
+    		if(session.getAttribute("principal") != null) {
     		req.getRequestDispatcher("/house/HouseWrite.jsp")
     		.forward(req, res);
+    		}
+    		else {
+    			req.getRequestDispatcher("user/loginForm.jsp")
+    			.forward(req, res);
+    		}
     	}
+    	
     	
     	//게시글 등록 post 요청
     	else if(cmd.equals("write_process")) {
@@ -78,12 +86,13 @@ public class HouseController extends HttpServlet {
     		String houseName = mr.getParameter("houseName");
     		String scontent = mr.getParameter("scontent");
     		String lcontent = mr.getParameter("lcontent");
+    		String userid = mr.getParameter("userid");
     		WriteReqDTO dto = new WriteReqDTO();
     		dto.setHouseName(houseName);
     		dto.setScontent(scontent);
     		dto.setLcontent(lcontent);
     		dto.setOfile(newFileName);
-    		dto.setId("aa");
+    		dto.setId(userid);
     		
     		//System.out.println(session.getAttribute("id"));
     		//insert구문으로 1행 추가 int값으로 리턴
@@ -105,7 +114,7 @@ public class HouseController extends HttpServlet {
     		int page  = Integer.parseInt(req.getParameter("page"));
     		req.setAttribute("page", page);
     		List<ListReqDTO> lists = hs.list(page);
-    		int lastPage = (hs.lastPage()-1)/5;
+    		int lastPage = (hs.lastPage()-1)/8;
     		req.setAttribute("lists",lists);
     		req.setAttribute("lastPage", lastPage);
     		req.getRequestDispatcher("house/HouseList.jsp")
@@ -124,6 +133,14 @@ public class HouseController extends HttpServlet {
     	else if(cmd.equals("view")) {
     		int num = Integer.parseInt(req.getParameter("num"));
     		ViewReqDTO views = hs.detail(num);
+    		//조회수 증가 로직
+    		if(session.getAttribute("principal") != null) {
+    			User id = (User) session.getAttribute("principal");
+    			if(!id.getId().equals(views.getId())) {
+        			System.out.println(id.getId() +"," + views.getId());
+        			views.setViews(hs.visitUpdate(num));
+        		}
+    		}
     		req.setAttribute("views",views);
     		req.getRequestDispatcher("house/HouseView.jsp")
     		.forward(req,res);
@@ -146,24 +163,29 @@ public class HouseController extends HttpServlet {
     		String savePoint = req.getServletContext().getRealPath("house/img");
     		int maxPointSize = 5 * 1024 * 1024;
     		MultipartRequest mr = new MultipartRequest(req,savePoint,maxPointSize,"utf-8");
+    		String newFileName = null;
     		String change_img = mr.getParameter("change_img");
-    		File delete_img = new File(savePoint + File.separator + change_img);
-    		if(delete_img.exists()) {
-    			delete_img.delete();
-    		}
+    		
     		String ofile = mr.getFilesystemName("ofile");
-    		System.out.println("여기 :" + ofile);
-    		String exe = ofile.substring(ofile.lastIndexOf("."));
-    		String now = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new Date());
-    		String newFileName = now + exe;
-    		
-    		File oldFile = new File(savePoint + File.separator + ofile);
-    		System.out.println(oldFile);
-    		File newFile = new File(savePoint + File.separator + newFileName);
-    		System.out.println(newFile);
-    		oldFile.renameTo(newFile);
-    		
-    		
+    		if (ofile == null) {
+    			newFileName = change_img;
+    		}
+    		else {
+    			File delete_img = new File(savePoint + File.separator + change_img);
+        		if(delete_img.exists()) {
+        			delete_img.delete();
+        		}
+
+        		String exe = ofile.substring(ofile.lastIndexOf("."));
+        		String now = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new Date());
+        		newFileName = now + exe;
+        		File oldFile = new File(savePoint + File.separator + ofile);
+        		System.out.println(oldFile);
+        		File newFile = new File(savePoint + File.separator + newFileName);
+        		System.out.println(newFile);
+        		oldFile.renameTo(newFile);
+    		}
+
     		int num = Integer.parseInt(mr.getParameter("num"));
     		System.out.print(num);
     		
@@ -184,8 +206,22 @@ public class HouseController extends HttpServlet {
     			.forward(req, res);
     		}
     	}
+    	
+    	//게시글 삭제 진행
+    	else if(cmd.equals("delete")) {
+    		System.out.println("삭제프로세스");
+    		int num = Integer.parseInt(req.getParameter("num"));
+    		int result = hs.delete(num);
+    		if(result == 1) {
+    			req.getRequestDispatcher("house?cmd=list&page=0")
+    			.forward(req, res);
+    		}
+    	}
+
+    	
+    	
+    	
     }
-    
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		process(request,response);

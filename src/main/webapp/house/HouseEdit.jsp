@@ -7,7 +7,7 @@
 		<form method = "post" action = "<%= request.getContextPath()%>/house?cmd=edit_process"
 				enctype = "multipart/form-data">
 			<input type ="hidden" name = "num" value ="${edit.num}" />
-			<input type ="text" name = "change_img" value = "${edit.ofile}" />
+			<input type ="hidden" name = "change_img" value = "${edit.ofile}" />
 			<p> 제목 : </p>
 			<input type = "text" name ="houseName" value= "${edit.houseName }" />
 			<p> 간략설명 : ${edit.scontent}</p>

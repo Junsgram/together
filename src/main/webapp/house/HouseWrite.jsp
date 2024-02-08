@@ -1,10 +1,16 @@
+<%@page import="javax.websocket.SendResult"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file = "/include/header.jsp"%>
-
+<%
+	if(session.getAttribute("principal") == null) {
+		response.sendRedirect("../user/loginForm.jsp");
+	}
+%>
 	<h2> 첫번 째 페이지입니다.</h2>
 	<div>
 		<form method = "post" action ="/together/house?cmd=write_process" enctype = "multipart/form-data">
+			<input type = "hidden" name ="userid" value ="${sessionScope.principal.id}">
 			<p>숙소 제목 : 
 				<input type = "text" name = "houseName" id ="houseName" placeholder= "숙소 제목을 입력해주세요.">
 			</p>

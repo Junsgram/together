@@ -67,11 +67,11 @@ public class HouseDAO {
 		Statement stmt = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
-		int start = 5*page +1; 
+		int start = 8*page +1; 
 		try {
 			psmt = con.prepareStatement(sql);
 			psmt.setInt(1, start);
-			psmt.setInt(2,start+4);
+			psmt.setInt(2,start+7);
 			//실행
 			rs = psmt.executeQuery();
 			while(rs.next()) {
@@ -141,6 +141,31 @@ public class HouseDAO {
 			}
 		}
 		return house;
+	}
+	//조회수 증가
+	public int visitUpdate(int num) {
+		int result = 0;
+		//DB연결
+		Connection con = DBConnection.getConnection();
+		//쿼리 작성 및 객체 생성
+		String sql = "update house set views = views + 1 where num = ? ";
+		PreparedStatement psmt = null;
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setInt(1, num);
+			//실행
+			result = psmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			if(con != null && psmt != null) {
+				DBConnection.close(con, psmt);
+			}
+		}
+		
+		return result;
 	}
 	
 	//마지막 페이지
@@ -258,13 +283,39 @@ public class HouseDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally {
+			if(con != null && psmt != null) {
+				DBConnection.close(con, psmt);
+			}
+		}
+		return result;
+	}
+	
+	//삭제하기 프로세스
+	public int delete_process(int num) {
+		int result = 0;
+		//DB연결
+		Connection con = DBConnection.getConnection();
+		//쿼리문 작성 및 객체 생성
+		String sql = "delete from house where num = ? ";
+		PreparedStatement psmt = null;
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setInt(1, num);
+			//실행
+			result = psmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			if(con != null && psmt != null) {
+				DBConnection.close(con, psmt);
+			}
+		}
 		return result;
 	}
 	
 	
-	
-	
 
-	
-	
 }

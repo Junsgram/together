@@ -42,5 +42,13 @@ public class HouseService {
 	public int edit_process(ViewReqDTO dto) {
 		return dao.edit_process(dto);
 	}
+	//삭제하기
+	public int delete(int num) {
+		return dao.delete_process(num);
+	}
+	//조회수 증가
+	public int visitUpdate(int num) {
+		return dao.visitUpdate(num);
+	}
 }
 
