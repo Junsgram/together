@@ -11,7 +11,6 @@
 </script>
 
 
-
 <%
 	String savedId="";
 	Cookie[] cookies = request.getCookies();
@@ -26,22 +25,27 @@
 	}
 %>
 
-	<h2>로그인 페이지 입니다.</h2>
-	<div>
-		<form action="<%=request.getContextPath()%>/user?cmd=login" method="post">
-	  		<div>
-	    		아이디
-	    		<input type="text" name="userId" id="userId" placeholder="Enter Id" value="<%=savedId%>">
-	  		</div>
-	  		<div>
-	        	<input type="checkbox" name="remember" value="true"> Remember me
-	    	</div>
-	  		<div>
-	    		비밀번호
-	    		<input type="password" name="userPass" id="userPass" placeholder="Enter Password">
-	  		</div>
-	  		<button type="submit">로그인</button>
-	  	</form>
+
+<div id="loginForm">
+  	<div class="container">
+    	<div class="input-form-backgroud row">
+      		<div class="input-form col-md-5 mx-auto">
+        		<form class="validation-form" action="<%=request.getContextPath()%>/user?cmd=login" method="post">
+					<div class="mb-3">
+			            
+			            <input type="text" name="userId" id="userId" placeholder="아이디를 입력하세요!" class="form-control"  value="<%=savedId%>" required>
+			            <input type="checkbox" name="remember" value="true" id = "rememberBox"/> 아이디 기억하기
+			        </div>
+          			<div class="mb-3">
+            			<input type="password" name="userPass" id="userPass" placeholder="비밀번호를 입력하세요!" class="form-control" required>
+          			</div>
+          			<div class="mb-4"></div>
+          				<button class="btn btn-primary btn-lg btn-block" type="submit">로그인</button>
+        			</form>
+      		</div>
+    	</div>
   	</div>
+</div>  	
+  	
 
 <%@ include file="../include/footer.jsp" %>
