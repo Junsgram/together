@@ -13,17 +13,29 @@ create table item_order(
 	buyer_addr
 	
 장바구니db - 회원ID, num(123),title, price,quantity,총가격?
+num값은 시퀀스로 하지않고 VALUES 
+((SELECT MAX(cart_sequence) FROM cart_items) + 1, ...)"
+으로 대체합니다. 
+id는 로그인한 유저 값을 가져와야함.
 create table item_cart(
+	num number not null,
+	id varchar2(30) not null,
+	title varchar2(300) not null,
+	price number not null,
+	ofile varchar2(30) not null,
+	order_quantity number not null
+	);
+	
 	
 
 create table items (
     num number not null,
-    id varchar2(30) not null, //USERID?
+    id varchar2(30) not null, 
     title varchar2(300) not null,
     scontent varchar2(500),
     lcontent varchar2(500),
     price number not null,
-    quantity number not null, // 추가됨.
+    quantity number not null,
     likes number  default 0,
     views number default 0,
     stars number default 0,
@@ -40,13 +52,16 @@ commit;
 
 select * from items;
 
-create sequence book_com_seq
+create SEQUENCE seq_save_items
 increment by 1
 start with 1
 minvalue 1
 nomaxvalue
 nocycle
 nocache;
+
+
+
 
 uploadProcess 물어볼것.
 

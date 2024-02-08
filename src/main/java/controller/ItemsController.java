@@ -19,11 +19,11 @@ import util.Script;
 
 
 @WebServlet("/items")
-public class itemsController extends HttpServlet {
+public class ItemsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
-    public itemsController() {
+    public ItemsController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,7 +31,7 @@ public class itemsController extends HttpServlet {
     	String cmd = req.getParameter("cmd");
     	System.out.println(cmd);
     	ItemsService itemsService = new ItemsService();
-    	// 결제화면-결제전 결제 정보를 보여주자., 장바구니(db)
+    	// 결제화면-결제전 결제 정보를 보여주자.
     	if(cmd.equals("itemslist")) {
     		//전체 상품 뿌려주기.
     		List<Items> items = itemsService.items_list();
@@ -52,6 +52,9 @@ public class itemsController extends HttpServlet {
     		.forward(req, res);
     	}else if(cmd.equals("add_cart")) {
     		System.out.println("장바구니에 추가");
+    		//장바구니추가버튼을 누른상태.
+    		
+    		
     		req.getRequestDispatcher("item/addcartprocess.jsp")
     		.forward(req, res);
     	}else if(cmd.equals("detail")) {

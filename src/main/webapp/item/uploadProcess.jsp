@@ -26,9 +26,11 @@
 	int price = Integer.parseInt(mr.getParameter("price"));
 	int quantity = Integer.parseInt(mr.getParameter("quantity"));
 	SaveReqDto dto = new SaveReqDto();
+
 	dto.setTitle(title);
 	dto.setScontent(scontent);
 	dto.setLcontent(lcontent);
+	dto.setQuantity(quantity);
 	dto.setOfile(newFilename);
 	dto.setPrice(price);
 	ItemsDao dao = new ItemsDao();

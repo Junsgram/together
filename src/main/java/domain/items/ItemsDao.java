@@ -30,8 +30,6 @@ public class ItemsDao {
 		System.out.println("반복문 진입전");
 		
 		while(rs.next()) {
-			System.out.println("aaaaaaaaainsert");
-			
 			Items item = new Items();
 			item = Items.builder()
 					.num(rs.getInt("num"))
@@ -62,8 +60,8 @@ public class ItemsDao {
 	}
 	public int insert(SaveReqDto dto) {
 		int result =0;
-		String query = "insert into items(num, id,title, scontent, lcontent,price,ofile)"
-				+ " values(seq_save_items.nextval,'테스트용아이디',?,?,?,?,?)";
+		String query = "insert into items(num, id,title, scontent, lcontent,price,ofile,quantity)"
+				+ " values(seq_save_items.nextval,'테스트용아이디',?,?,?,?,?,?)";
 		PreparedStatement psmt=null;
 		Connection conn = DBConnection.getConnection(); 
 		try {
@@ -73,6 +71,7 @@ public class ItemsDao {
 			psmt.setString(3, dto.getLcontent());
 			psmt.setInt(4, dto.getPrice());
 			psmt.setString(5, dto.getOfile());
+			psmt.setInt(6, dto.getQuantity());
 			result =psmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

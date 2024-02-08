@@ -24,6 +24,7 @@ public class Items {
 	private int stars;
 	private String ofile;
 	private Date regidate;
+	private int quantity;
 	
 
 }
