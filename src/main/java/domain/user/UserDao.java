@@ -101,6 +101,10 @@ public class UserDao {
 			psmt.setString(12, joinDto.getDogname());
 			psmt.setString(13, joinDto.getBirthday());
 			result = psmt.executeUpdate();
+			
+			
+			System.out.println("---------------");
+			System.out.println(joinDto.getOfile());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -67,7 +67,7 @@ function passCheck(){
 		<div>
 	 		강아지 사진 
 	 		<input type="file" name="photo" id="photo" accept = "image/*">
-	 		
+	 		<input type="hidden" name="originPic" value="${sessionScope.principal.ofile}"/>
 		</div>
 		<!-- 등록할 강아지 사진 미리보기 -->
 		<c:choose>
@@ -107,7 +107,7 @@ function passCheck(){
 	
 	
 	
-	//삭제하기 버튼 누르면 디폴트 이미지 들어가게 해두기
+	//삭제하기 버튼 누르면 미리보기 화면에 디폴트 이미지 들어가게 해두기
 	let deleteImgBtn = document.querySelector("#deleteImage");
 	deleteImgBtn.addEventListener("click", function(){
 	profile.setAttribute("src", "/together/user/default_img/default_profile_img.jpg");
