@@ -7,12 +7,13 @@
 <%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
 		<h2> Diary List Page.</h2>
 
-		<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" >
+		<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+		style = "width:1400px; margin: 0 auto;" >
 		<!-- for 반복문을 돌리지 않을경우 index번호고 받아와야한다 ${lists[0].num} -->
 			<c:forEach var = "dto" items = "${lists}">
 			<!--  main 부분 개별 블럭  -->
 				<div class="col mb-5">
-					<div class="card h-100" style = "width:300px; height: 300px; margin: 5px 50px;">
+					<div class="card h-100" style = " width:300px; height: 300px; margin: 5px 50px;">
 						<!-- House image-->
 						<img class="card-img-top" src="/together/diary/img/${dto.ofile}" alt="diaryImg" 
 						style = "width:300px; height: 300px;"/>
@@ -20,10 +21,9 @@
 						<div class="card-body p-4">
 							<div class="text-center">
 							    <!-- House name-->
-								<h5 class="fw-bolder">${dto.houseName}</h5>
+								<h5 class="fw-bolder">${dto.title}</h5>
 								<p>${dto.scontent}</p>
 								<h6>작성자 : ${dto.id }</h6>
-								<p>주소 : ${dto.address}</p>
 								<span>좋아요 : ${dto.likes}</span><span> 조회수 : ${dto.views}</span><span> 별점 : ${dto.stars}</span>
 							</div>
 						</div>

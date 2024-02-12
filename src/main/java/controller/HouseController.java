@@ -62,11 +62,10 @@ public class HouseController extends HttpServlet {
     	
     	//게시글 등록 post 요청
     	else if(cmd.equals("write_process")) {
-    		System.out.println("등록 프로세스 접근");
+    		System.out.println("하우스 등록 프로세스 접근");
     		//사진 객체 생성
     		//저장경로 getServletContext()가 application을 호출
     		String savePoint = req.getServletContext().getRealPath("house/img");
-    		System.out.println(savePoint);
     		//사진크기
     		int maxSize = 5 * 1024 * 1024; 
     		//객체
@@ -98,9 +97,9 @@ public class HouseController extends HttpServlet {
     		//insert구문으로 1행 추가 int값으로 리턴
     		int result = hs.regihouse(dto);
     		if(result == 1) {
+    			int rownum = hs.rownum();
     			System.out.println("등록완료");
-    			System.out.println(dto.getNum());
-    			req.getRequestDispatcher("house?cmd=view&num="+dto.getNum())
+    			req.getRequestDispatcher("house?cmd=view&num="+rownum)
     			.forward(req, res);
     		}
     		else {
@@ -121,13 +120,6 @@ public class HouseController extends HttpServlet {
     		.forward(req, res);
     	}
     	
-    	//작성 후 상세페이지 이동
-//    	else if(cmd.equals("show")) {
-//    		String id1 = req.getParameter("id");
-//    		ViewReqDTO show = hs.show(id1);
-//    		req.setAttribute("show", show);
-//    		req.get
-//    	}
   
     	//상세보기 페이지
     	else if(cmd.equals("view")) {

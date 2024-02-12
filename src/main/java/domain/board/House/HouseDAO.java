@@ -57,6 +57,7 @@ public class HouseDAO {
 	}
 	//게시글 작성 후 상세보기로 페이지 이동
 	public int detailNum() {
+		int result = 0;
 		Connection con = DBConnection.getConnection();
 		String sql = "select together_house_seq.currval from dual";
 		Statement stmt = null;
@@ -64,11 +65,15 @@ public class HouseDAO {
 		try {
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		return result;
 	}
 	//목록보기 로직
 	public List<ListReqDTO> list(int page) {

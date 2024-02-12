@@ -1,16 +1,22 @@
 package domain.board.Diary.DTO;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class WriteReqDTO {
+import lombok.Data;
+
+
+
+
+@Data
+public class DwriteReqDTO {
 	private int num;
+	private String title;
 	private String id;
-	private String houseName;
-	private String address;
 	private String scontent;
 	private String lcontent;
 	private int likes;
 	private int views;
 	private int stars;
+	private String ofile;
 	private Date regidate;
 }

@@ -2,7 +2,6 @@ package service;
 
 import java.util.List;
 
-import domain.board.House.House;
 import domain.board.House.HouseDAO;
 import domain.board.House.DTO.EditReqDTO;
 import domain.board.House.DTO.ListReqDTO;
@@ -49,6 +48,10 @@ public class HouseService {
 	//조회수 증가
 	public int visitUpdate(int num) {
 		return dao.visitUpdate(num);
+	}
+	//게시글 번호 받아오기
+	public int rownum() {
+		return dao.detailNum();
 	}
 }
 
