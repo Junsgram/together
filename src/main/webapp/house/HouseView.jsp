@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file = "/include/header.jsp"%>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <style>
 	#liketo{
 		background-image :url("house/img/likes/emptyheart.png");
@@ -19,11 +20,11 @@
 </style>
 <script>
 	//댓글 들록 시 페이지 이동 없이 댓글 리스트 추가
-	function commentSave(id,houseName) {
+	function commentSave(userId,houseName) {
 		let data = {
-				id : id,
+				userId : userId,
 				houseName : houseName,
-				content : $("#comment").val()
+				content : $("#content").val()
 		};
 		
 		$.ajax({
@@ -34,7 +35,7 @@
 			//JSON 데이터 전송 타입은 application/json
 			contentType: "application/json; charset=utf-8",
 			//응답 받을 데이터 타입을 json으로 지정하여 객체로 변환 JSON.parse()
-			dataType: "json",
+			dataType: "json"
 		}).done(function(result) {
 			if(result.statusCode > 0) {
 				console.log(result);
@@ -43,7 +44,7 @@
 			else {
 				alert("댓글 달기 실패");
 			}
-			$("#comment").val("");
+			$("#content").val("");
 		})
 	}
 	
@@ -57,7 +58,27 @@
 		 + "<i onclick='deleteComment("+data.num+")' class='material-icons'>delete</i>"
 		 + "</div> </li>" ;
 	}
-	
+	//댓글 삭제하기
+	function deleteComment(num) {
+		///요청
+		console.log($("#reply-"+num));
+		$.ajax({
+				type: "POST",
+				url: "/together/housecomment?cmd=delete&num="+num,
+				dataType: "json"
+		}).done(function(result) {
+			console.log(result);
+			if(result.statusCode == 1) {
+				console.log(result);
+				//선택한 id를 삭제 (#reply-?)는 li의 id번호
+				$("#reply-"+num).remove();
+				
+			}
+			else {
+				alert("데이터 삭제 실패");
+			}
+		})
+	}
 </script>
 
 	<h2>게시글 세부 페이지입니다.</h2>
@@ -82,7 +103,7 @@
 	            </form>
 	        </c:when>
 	        <c:otherwise>
-	            <button id="liketo">좋아요</button>
+	            <button id="liketo"></button>
 	        </c:otherwise>
 	    </c:choose>
 	</div>
@@ -127,7 +148,7 @@
 							<!--  타입을 버튼타입 및 onclick이벤트로 commentSave()메소드를 활용하여  -->
 							<!--  commentSave메소드 매개변수로 bookid와 userid를 el구문으로 작성 -->
 							<button  type = "button" 
-							onclick = "commentSave(${book.bookId}, ${sessionScope.principal.id})" 
+							onclick = "commentSave(${sessionScope.principal.id},${views.houseName})" 
 							class="btn btn-primary pull-right">댓글쓰기</button>
 						</div>
 						
@@ -165,7 +186,6 @@
 			</div>
 
 		</div>
-	</div>
 	<!-- 댓글 박스 끝 -->
 	<script>
 	//좋아요 버튼 로직	
