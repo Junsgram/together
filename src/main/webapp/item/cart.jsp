@@ -12,6 +12,17 @@
 	
 	
 %>
+<script>
+    function changeQuantity(btn, amount) {
+        var quantitySpan = btn.parentNode.querySelector('.quantity');
+        var quantity = parseInt(quantitySpan.innerText);
+        quantity += amount;
+        
+        if (quantity >= 0) {
+            quantitySpan.innerText = quantity;
+        }
+    }
+</script>
 <h2>장바구니 목록</h2>
 <br/>
 <br/>
@@ -26,12 +37,19 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">${c.num}</h5>
+                
                                     <h5 class="fw-bolder">${c.title}</h5>
                                     <!-- Product price-->
                                     ${c.price}
+                                    <!-- Order quantity -->
+                        <div >
+                            <button class="btn btn-primary minus-btn" onclick="changeQuantity(this, -1)">-</button>
+                            <span class="quantity">1</span>
+                            <button class="btn btn-primary plus-btn" onclick="changeQuantity(this, 1)">+</button>
+                        </div>
                    <form action="<%=request.getContextPath()%>/cart?cmd=delete" method="post">
-	  				<input type="hidden" name="cart_num" value="${c.id}">
+	  				<input type="hidden" name="cart_num" value="${c.num}">
+	  				<input type="hidden" name ="cart_id" value="${c.id}">
 	  				<input type="hidden" name="cart_title" value="${c.title}">
 	  				<button type="submit" id="delete"  class="btn btn-primary">삭제</button>
 	  				</form>

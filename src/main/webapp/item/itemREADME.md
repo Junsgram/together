@@ -62,8 +62,10 @@ nocache;
 
 
 
-
-uploadProcess 물어볼것.
+&^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
+로그아웃시 session에 userId삭제해도 되는지?
+//현재 itemlist에 해당 스크립트가 있어 itemlist페이지 집입시 작동함
+	//향후 헤더나 index 페이지로 이동 필요함.
 
 결제api관련
 https://okky.kr/articles/854015

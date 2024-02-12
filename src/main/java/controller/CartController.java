@@ -9,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import com.google.gson.Gson;
 
@@ -27,7 +29,7 @@ public class CartController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-    //장바구니 추가, 장바구니
+    // 장바구니 갯수 새기
    protected void process(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException { 
 	   String cmd = req.getParameter("cmd");
 	   System.out.println("cmd값은 :" +cmd);
@@ -44,25 +46,55 @@ public class CartController extends HttpServlet {
 		   CartSaveReqDto dto = gson.fromJson(data, CartSaveReqDto.class);
 		   System.out.println(dto);
 		   int result = cartService.add_cart(dto);
-		   System.out.println("장바구니등록."+result);
-		   if(result==1) {
-			   System.out.println("여기진입");
-			   Script.alertMsg("장바구니에 등록되었습니다.","<%=request.getContextPath()%>/items?cmd=itemlist", res);
-		   }else {
-			   Script.alertMsg("장바구니에 등록 실패.","<%=request.getContextPath()%>/items?cmd=itemlist", res);
-		   }
+		   System.out.println("장바구니길이.");
+		   if (result == 1) {
+			    // 장바구니 등록 성공
+			    res.setContentType("application/json");
+			    res.setCharacterEncoding("UTF-8");
+			    res.getWriter().write("{\"message\":\"장바구니에 등록되었습니다.\"}");
+			    res.getWriter().flush();
+			} else {
+			    // 장바구니 등록 실패
+			    res.setContentType("application/json");
+			    res.setCharacterEncoding("UTF-8");
+			    res.getWriter().write("{\"message\":\"장바구니 등록에 실패했습니다.\"}");
+			    res.getWriter().flush();
+			}
+	   }
+	   else if(cmd.equals("count_cart")) {
+		   // 장바구니 리스트의 개수를 가져오는 로직을 구현합니다.
+		   	HttpSession session = req.getSession();
+		   	String id = (String) session.getAttribute("userId");
+		   	System.out.println(id);
+		    int cartCount = cartService.getCartItemCount(id);
+
+		    res.setContentType("application/json");
+		    res.setCharacterEncoding("UTF-8");
+		    // 장바구니 리스트의 개수를 JSON 형식으로 응답합니다.
+		    res.getWriter().write("{\"count\":" + cartCount + "}");
+		    res.getWriter().flush();
 	   }
 	   //장바구니 버튼 눌렀을때
 	   else if(cmd.equals("in_cart")) {
 		   System.out.println("장바구니 진입");
-		   List<Cart> cart =cartService.cart_list();
+		   HttpSession session = req.getSession();
+		   String id = (String) session.getAttribute("userId");
+		   List<Cart> cart =cartService.cart_list(id);
 		   System.out.println(cart);
 		   req.setAttribute("carts", cart);
 		   req.getRequestDispatcher("item/cart.jsp")
 		   .forward(req,res);
 	   }else if(cmd.equals("delete")) {
 		   System.out.println("장바구니 단일 삭제");
-		   String id = req.getParameter("");
+		   String id = req.getParameter("cart_id");
+		   int num = Integer.parseInt(req.getParameter("cart_num"));
+		   System.out.println(id);
+		   System.out.println(num);
+		   int result = cartService.deleteone(num);
+		   if(result == 1) {
+			   res.sendRedirect("cart?cmd=in_cart");
+		   }
+		   else { Script.back("삭제실패", res);}
 	   }
 		   
 			   

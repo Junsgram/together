@@ -50,13 +50,14 @@
 	                        </li>
                         
                     </ul>
-                    <form class="d-flex">
+                    <!-- form태그에 action속성으로 설정시 주소가 이상하게 입력되어 a태그로 바꿈. -->
+                    <a class="d-flex" href="/together/cart?cmd=in_cart" style="text-decoration: none;">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span id="cartCount" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                         </button>
-                    </form>
+                    </a>
                 </div>
             </div>
         </nav>

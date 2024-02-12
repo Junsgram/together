@@ -15,8 +15,8 @@ public class CartDao {
 	Connection conn = DBConnection.getConnection();
 	public int insert(CartSaveReqDto dto) {
 		int result = 0;
-		String query = "insert into item_cart(num, id, title,price,order_quantity,ofile)"
-						+" values((select COALESCE(MAX(num), 0) from item_cart)+1,?,?,?,?,?)";
+		String query = "insert into item_cart(num,id, title,price,order_quantity,ofile)"
+						+" values(Coalese(MAX(num),0)+1,?,?,?,?,?)";
 		//Coalese(MAX(num),0) -> coalesece함수는 차례차례 인수를 검사하면서 null이 아닌 첫번쨰 인수를 반환한다.
 		PreparedStatement psmt = null;
 		try {
@@ -33,14 +33,16 @@ public class CartDao {
 		}
 		return result;
 	}
-	public List<Cart> findAll(){
+	public List<Cart> findAll(String id){
+		//해당 아이디인 리스트로 바꿔야함.
 		List<Cart> carts = new ArrayList<Cart>();
-		String query = "select * from item_cart";
-		Statement stmt = null;
+		String query = "select * from item_cart where id=?";
+		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(query);
+			psmt = conn.prepareStatement(query);
+			psmt.setString(1, id);
+			rs =psmt.executeQuery();
 			while(rs.next()) {
 				Cart cart = new Cart();
 				cart = Cart.builder()
@@ -57,9 +59,53 @@ public class CartDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			DBConnection.close(conn, stmt, rs);
+			DBConnection.close(conn, psmt, rs);
 		}
 	return carts;
 		
+	}
+	
+	public int countcart(String id) {
+		 String query = "SELECT COUNT(*) FROM item_cart WHERE id = ?";
+		    PreparedStatement psmt = null;
+		    ResultSet rs = null;
+		    int count = 0;
+		    
+		    try {
+		        psmt = conn.prepareStatement(query);
+		        psmt.setString(1, id);
+		        rs = psmt.executeQuery();
+		        
+		        if (rs.next()) {
+		            count = rs.getInt(1);
+		        }
+		    } catch (SQLException e) {
+		    	// TODO Auto-generated catch block
+				e.printStackTrace();
+		    } finally {
+		    	DBConnection.close(conn, psmt, rs);
+		    }
+		    
+		    return count;
+	}
+	public int deleteone(int num) {
+		int result=0;
+		String query = "delete from item_cart where num=?";
+		PreparedStatement psmt=null;
+	Connection conn = DBConnection.getConnection(); 
+		try {
+			psmt = conn.prepareStatement(query);
+			psmt.setInt(1, num);
+			result = psmt.executeUpdate();
+			System.out.println(result);
+			System.out.println(num);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			DBConnection.close(conn, psmt);
+		}
+		
+		return result;
 	}
 }

@@ -20,13 +20,14 @@
 	File oldFile = new File(saveDirectory+File.separator+fileName);
 	File newFile = new File(saveDirectory+File.separator+newFilename);
 	oldFile.renameTo(newFile);
+	String userId = mr.getParameter("userId");
 	String title = mr.getParameter("title");
 	String scontent = mr.getParameter("scontent");
 	String lcontent = mr.getParameter("lcontent");
 	int price = Integer.parseInt(mr.getParameter("price"));
 	int quantity = Integer.parseInt(mr.getParameter("quantity"));
 	SaveReqDto dto = new SaveReqDto();
-
+	dto.setId(userId);
 	dto.setTitle(title);
 	dto.setScontent(scontent);
 	dto.setLcontent(lcontent);

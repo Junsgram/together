@@ -17,8 +17,14 @@ public class CartService {
 		int result = cartDao.insert(dto);
 		return result;
 	}
-	public List<Cart> cart_list(){
-		return cartDao.findAll();
+	public List<Cart> cart_list(String id){
+		return cartDao.findAll(id);
+	}
+	public int getCartItemCount(String id) {
+		return cartDao.countcart(id);
+	}
+	public int deleteone(int num) {
+		return cartDao.deleteone(num);
 	}
 
 }

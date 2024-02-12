@@ -46,17 +46,6 @@ public class ItemsController extends HttpServlet {
     		System.out.println("세이브프로세스 집입");
     		req.getRequestDispatcher("item/uploadProcess.jsp")
     		.forward(req, res);
-    	}else if(cmd.equals("cart")) {
-    		System.out.println("장바구니 진입");
-    		req.getRequestDispatcher("item/cart.jsp")
-    		.forward(req, res);
-    	}else if(cmd.equals("add_cart")) {
-    		System.out.println("장바구니에 추가");
-    		//장바구니추가버튼을 누른상태.
-    		
-    		
-    		req.getRequestDispatcher("item/addcartprocess.jsp")
-    		.forward(req, res);
     	}else if(cmd.equals("detail")) {
     		String id = req.getParameter("id");
     		Items item = itemsService.detail(id);
