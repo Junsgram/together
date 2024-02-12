@@ -34,9 +34,9 @@ public class UserDao {
 						.pw1(rs.getString("pw1"))
 						.pw2(rs.getString("pw2"))
 						.email(rs.getString("email"))
-						.call1(rs.getInt("call1"))
-						.call2(rs.getInt("call2"))
-						.call3(rs.getInt("call3"))
+						.call1(rs.getString("call1"))
+						.call2(rs.getString("call2"))
+						.call3(rs.getString("call3"))
 						.zipcode(rs.getString("zipcode"))
 						.addr1(rs.getString("addr1"))
 						.addr2(rs.getString("addr2"))
@@ -91,9 +91,9 @@ public class UserDao {
 			psmt.setString(2, joinDto.getPw1());
 			psmt.setString(3, joinDto.getPw2());
 			psmt.setString(4, joinDto.getEmail());
-			psmt.setInt(5, joinDto.getCall1());
-			psmt.setInt(6, joinDto.getCall2());
-			psmt.setInt(7, joinDto.getCall3());
+			psmt.setString(5, joinDto.getCall1());
+			psmt.setString(6, joinDto.getCall2());
+			psmt.setString(7, joinDto.getCall3());
 			psmt.setString(8, joinDto.getZipcode());
 			psmt.setString(9, joinDto.getAddr1());
 			psmt.setString(10, joinDto.getAddr2());
@@ -125,9 +125,9 @@ public class UserDao {
 			psmt.setString(1, editDto.getPw1());
 			psmt.setString(2, editDto.getPw2());
 			psmt.setString(3, editDto.getEmail());
-			psmt.setInt(4, editDto.getCall1());
-			psmt.setInt(5, editDto.getCall2());
-			psmt.setInt(6, editDto.getCall3());
+			psmt.setString(4, editDto.getCall1());
+			psmt.setString(5, editDto.getCall2());
+			psmt.setString(6, editDto.getCall3());
 			psmt.setString(7, editDto.getZipcode());
 			psmt.setString(8, editDto.getAddr1());
 			psmt.setString(9, editDto.getAddr2());
@@ -162,9 +162,9 @@ public class UserDao {
 						.pw1(rs.getString("pw1"))
 						.pw2(rs.getString("pw2"))
 						.email(rs.getString("email"))
-						.call1(rs.getInt("call1"))
-						.call2(rs.getInt("call2"))
-						.call3(rs.getInt("call3"))
+						.call1(rs.getString("call1"))
+						.call2(rs.getString("call2"))
+						.call3(rs.getString("call3"))
 						.zipcode(rs.getString("zipcode"))
 						.addr1(rs.getString("addr1"))
 						.addr2(rs.getString("addr2"))
