@@ -24,15 +24,16 @@ public class CommuDao {
 	public int regiCommu(WriteReqDto dto) {
 		con = DBConnection.getConnection();
 		int result = 0;
-		String query = "insert into community(num,communame,id,scontent,lcontent,ofile)"
-				+ " values(together_community_seq.nextval, ?,?,?,?,?)";
+		String query = "insert into community(num,title,id,scontent,lcontent,ofile,address)"
+				+ " values(together_community_seq.nextval, ?,?,?,?,?,?)";
 		try {
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, dto.getCommuName());
+			psmt.setString(1, dto.getTitle());
 			psmt.setString(2, dto.getId());
 			psmt.setString(3, dto.getScontent());
 			psmt.setString(4, dto.getLcontent());
 			psmt.setString(5, dto.getOfile());
+			psmt.setString(6, dto.getAddress());
 			result = psmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -53,18 +54,18 @@ public class CommuDao {
 		String query = "select * from ("
 				+ " select td.*, rownum as rnum from (select * from community order by num desc) td)"
 				+ " where rnum between ? and ? order by num desc"; 
-		int start = 5*page+1;
+		int start = 8*page+1;
 		try {
 			psmt = con.prepareStatement(query);
 			psmt.setInt(1, start);
-			psmt.setInt(2, start+4);
+			psmt.setInt(2, start+7);
 			rs = psmt.executeQuery();
 			while(rs.next()) {
 				ListReqDto dto = new ListReqDto();
 				dto = ListReqDto.builder()
 						.num(rs.getInt("num"))
 						.id(rs.getString("id"))
-						.commuName(rs.getString("commuName"))
+						.title(rs.getString("title"))
 						.scontent(rs.getString("Scontent"))
 						.lcontent(rs.getString("Lcontent"))
 						.address(rs.getString("Address"))
@@ -87,6 +88,31 @@ public class CommuDao {
 		}
 		return lists;
 	}
+	
+	//게시글 작성 후 상세보기로 페이지 이동
+	public int detailNum() {
+		int result = 0;
+		con = DBConnection.getConnection();
+		String sql = "select together_community_seq.currval from dual";
+		try {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			if(con != null && psmt != null && rs != null) {
+				DBConnection.close(con, stmt, rs);
+			}
+		}
+		
+		return result;
+	}
+	
 	//전체 게시글 수 찾는 메소드
 	public int lastPage() {
 		con = DBConnection.getConnection();
@@ -113,7 +139,7 @@ public class CommuDao {
 	public ViewReqDto detail(int num) {
 		ViewReqDto dto = new ViewReqDto();
 		con = DBConnection.getConnection();
-		String query = "select * from community where num=?";
+		String query = "select * from community where num = ?";
 		try {
 			psmt = con.prepareStatement(query);
 			psmt.setInt(1, num);
@@ -122,7 +148,7 @@ public class CommuDao {
 				dto = ViewReqDto.builder()
 						.num(rs.getInt("num"))
 						.id(rs.getString("id"))
-						.commuName(rs.getString("commuName"))
+						.title(rs.getString("title"))
 						.address(rs.getString("address"))
 						.scontent(rs.getString("scontent"))
 						.lcontent(rs.getString("lcontent"))
@@ -143,6 +169,26 @@ public class CommuDao {
 		}
 		return dto;
 	}
+	//조회수 메소드
+	public int visitUpdate(int num)	{
+		int result = 0;
+		con = DBConnection.getConnection();
+		String sql = "update community set views = views + 1 where num = ?";
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setInt(1, num);
+			result = psmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			if(con != null && psmt != null) {
+				DBConnection.close(con, psmt);
+			}
+		}
+		return result;
+	}
 	
 	//수정하기 페이지 요청
 	public EditReqDto edit(int num) {
@@ -155,7 +201,7 @@ public class CommuDao {
 			rs = psmt.executeQuery();
 			if (rs.next()) {
 				dto.setNum(rs.getInt("num"));
-				dto.setCommuName(rs.getString("communame"));
+				dto.setTitle(rs.getString("title"));
 				dto.setScontent(rs.getString("scontent"));
 				dto.setLcontent(rs.getString("lcontent"));
 				dto.setOfile(rs.getString("ofile"));
@@ -174,11 +220,11 @@ public class CommuDao {
 	public int edit_process (ViewReqDto dto) {
 		int result=0;
 		con = DBConnection.getConnection();
-		String query = "update community set communame=?, scontent=?, lcontent=?, ofile=?"
-				+ " where num=?";
+		String query = "update community set title=?, scontent=?, lcontent=?, ofile=?"
+				+ " where num= ?";
 		try {
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, dto.getCommuName());
+			psmt.setString(1, dto.getTitle());
 			psmt.setString(2, dto.getScontent());
 			psmt.setString(3, dto.getLcontent());
 			psmt.setString(4, dto.getOfile());
@@ -189,8 +235,24 @@ public class CommuDao {
 			e.printStackTrace();
 		} finally {
 			if (con!=null && psmt!=null) {
-				DBConnection.close(con, stmt);
+				DBConnection.close(con, psmt);
 			}
+		}
+		return result;
+	}
+	
+	//게시글 삭제
+	public int delete(int num) {
+		int result = 0;
+		con = DBConnection.getConnection();
+		String sql = "delete from community where num = ?";
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setInt(1, num);
+			result = psmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return result;
 	}

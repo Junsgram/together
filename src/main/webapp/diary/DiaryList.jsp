@@ -5,10 +5,22 @@
     pageEncoding="UTF-8"%>
 <%@ include file = "/include/header.jsp"%>
 <%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
-		<h2> Diary List Page.</h2>
-
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">We are Together</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">With this shop Together hompage</p>
+                </div>
+            </div>
+        </header>
+		<div style = "width: 1400px; max-width:100%; margin : 0 auto;">
+        <div style = "display: flex; justify-content: space-between; padding-top:30px;">
+        	<div></div>
+        	<h2> 오늘의 강아지 일기</h2>
+        	<button class="btn btn-dark" onclick ="location.href = 'diary?cmd=write'"> 글 등록 </button>
+        </div>
 		<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
-		style = "width:1400px; margin: 0 auto;" >
+		style = "width:100%; margin : 0 auto; padding-top: 50px;">
 		<!-- for 반복문을 돌리지 않을경우 index번호고 받아와야한다 ${lists[0].num} -->
 			<c:forEach var = "dto" items = "${lists}">
 			<!--  main 부분 개별 블럭  -->
@@ -37,26 +49,25 @@
         </div>
         
         <!--  paging  -->
-        <div style = "text-align : center;">
-        	<button><a href= "diary?cmd=list&page=0"> 처 음</a></button>
+        <div style = "text-align : center; padding-bottom : 30px;">
+        	<button class="btn btn-dark" onclick ="location.href = 'diary?cmd=list&page=0'"> 처 음</button>
 			<c:choose>
 				<c:when test = "${page==0}">
-					<button disabled><a href= "diary?cmd=list&page=${page-1}"> 이 전</a></button>
+					<button  class="btn btn-dark" onclick ="location.href ='diary?cmd=list&page=${page-1}'" disabled> 이 전</button>
 				</c:when>
 				<c:otherwise>
-					<button><a href= "diary?cmd=list&page=${page-1}"> 이 전</a></button>
+					<button class="btn btn-dark" onclick ="location.href ='diary?cmd=list&page=${page-1}'" > 이 전</button>
 				</c:otherwise>
 			</c:choose>
 			<c:choose>
 				<c:when test ="${page==lastPage}">
-					<button disabled><a href= "diary?cmd=list&page=${page+1}"> 다 음</a></button>
+					<button class="btn btn-dark" disabled onclick ="location.href = 'diary?cmd=list&page=${page+1}'" >다 음</button>
 				</c:when>
 				<c:otherwise>
-					<button><a href= "diary?cmd=list&page=${page+1}"> 다 음</a></button>
+					<button class="btn btn-dark" onclick ="location.href ='diary?cmd=list&page=${page+1}'" >다 음</button>
 				</c:otherwise>
 			</c:choose>
-	
-			<button><a href= "diary?cmd=list&page=${lastPage}"> 마 지 막</a></button>
-			<button><a href= "diary?cmd=write"> 글 등록 </a></button>
+			<button  class="btn btn-dark" onclick ="location.href ='diary?cmd=list&page=${lastPage}'" > 마 지 막</button>
 		</div>
+	</div>
 <%@ include file = "/include/footer.jsp"%>

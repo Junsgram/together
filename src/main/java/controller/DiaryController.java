@@ -129,7 +129,6 @@ public class DiaryController extends HttpServlet {
     		DviewReqDTO diaryDTO = ds.views(num);
     		if(id != null) {
     			if(!id.getId().equals(diaryDTO.getId())) {
-    				System.out.println("조회수증가 부분 " + ds.visitcount(num));
     				ds.visitcount(num);
     			}
     		}

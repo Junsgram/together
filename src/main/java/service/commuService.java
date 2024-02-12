@@ -16,6 +16,10 @@ public class commuService {
 	public int regiCommu(WriteReqDto dto) {
 		return dao.regiCommu(dto);
 	}
+	//게시글 등록 후 상세페이지로 이동
+	public int detailNum() {
+		return dao.detailNum();
+	}
 	
 	//리스트 
 	public List<ListReqDto> list(int page){
@@ -36,5 +40,13 @@ public class commuService {
 	//수정프로세스 요청
 	public int edit_process(ViewReqDto dto) {
 		return dao.edit_process(dto);
+	}
+	//조회수
+	public int visitUpdate(int num) {
+		return dao.visitUpdate(num);
+	}
+	//게시글 삭제
+	public int delete(int num) {
+		return dao.delete(num);
 	}
 }

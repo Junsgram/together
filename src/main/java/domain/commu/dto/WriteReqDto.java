@@ -15,7 +15,8 @@ import lombok.NoArgsConstructor;
 public class WriteReqDto {
 	private int num;
 	private String id;
-	private String commuName;
+	private String title;
+	private String address;
 	private String scontent;
 	private String lcontent;
 	private int likes;

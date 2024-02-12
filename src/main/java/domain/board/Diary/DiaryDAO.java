@@ -151,7 +151,7 @@ public class DiaryDAO {
 		int result = 0;
 		Connection con = DBConnection.getConnection();
 		PreparedStatement psmt = null;
-		String sql = "update diary set views = views+1 where num = ?";
+		String sql = "update diary set views = views + 1 where num = ?";
 		try {
 			psmt = con.prepareStatement(sql);
 			psmt.setInt(1, num);

@@ -247,6 +247,11 @@ public class HouseDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		finally {
+			if(con != null && psmt != null && rs != null) {
+				DBConnection.close(con, psmt, rs);
+			}
+		}
 		return show;
 	}
 	
