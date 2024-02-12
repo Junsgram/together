@@ -39,7 +39,11 @@
 	   
 	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/items?cmd=itemslist">상품</a></li>
 	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/house?cmd=list&page=0">숙소</a></li>
+<<<<<<< HEAD
 	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/diary?cmd=list&page=0">Diary</a></li>
+=======
+	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/commu?cmd=list&page=0">커뮤니티</a></li>
+>>>>>>> dev
 	                        <li class="nav-item dropdown">
 	                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
 	                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
