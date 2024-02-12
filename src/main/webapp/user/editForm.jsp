@@ -34,63 +34,7 @@ function passCheck(){
 </script>
 
 
-<%-- 	<h2>회원정보 수정 페이지 입니다.</h2>
-	<form action="<%=request.getContextPath()%>/user?cmd=edit" method="post" enctype="multipart/form-data" onsubmit="return passCheck()">
-		<div>
-			아이디
-			<input type="text" name="userId" id="userId" value="${sessionScope.principal.id}" readonly>
-		</div>
-		<div>
-	 		비밀번호 *
-	 		<input type="password" name="userPass1" id="userPass1" value="${sessionScope.principal.pw2}" required>
-		</div>
-		<div>
-	 		비밀번호 확인 *
-	 		<input type="password" name="userPass2" id="userPass2" value="${sessionScope.principal.pw2}" required>
-		</div>
-		<div id = "resultDiv"> </div>
-		<div>
-	 		이메일 *
-	 		<input type="email" name="email" id="email" value="${sessionScope.principal.email}" required>
-		</div>
-		<div>
-	 		전화번호 *
-	 		<input type="text" name="call1" id="call1" value="${sessionScope.principal.call1}" required>
-	 		<input type="text" name="call2" id="call2" value="${sessionScope.principal.call2}" required>
-	 		<input type="text" name="call3" id="call3" value="${sessionScope.principal.call3}" required>
-		</div>
-		<div>
-	 		우편번호 *
-	 		<input type="text" name="zipcode" id="zipcode" value="${sessionScope.principal.zipcode}" readonly>
-			<button type="button" value="우편번호검색" id="zipbtn">우편번호 검색</button><br/>
-	 		<input type="text" name="addr1" id="addr1" value="${sessionScope.principal.addr1}" readonly>
-	 		<input type="text" name="addr2" id="addr2" value="${sessionScope.principal.addr2}">
-		</div>
-		<div>
-	 		강아지 사진 
-	 		<input type="file" name="photo" id="photo" accept = "image/*">
-	 		<input type="hidden" name="originPic" value="${sessionScope.principal.ofile}"/>
-		</div>
-		<!-- 등록할 강아지 사진 미리보기 -->
-		<c:choose>
-			<c:when test="${sessionScope.principal.ofile == 'default_profile_img.jpg'}">
-				<img id = "profile" src="/together/user/default_img/default_profile_img.jpg" style="width:200px"/>
-			</c:when>
-			<c:otherwise>
-				<img id = "profile" src="/together/user/profile_img/${sessionScope.principal.ofile}" style="width:200px"/>
-			</c:otherwise>
-		</c:choose>
-		<button type="button" id="deleteImage">삭제하기</button>
-		<div>
-	 		강아지 이름
-	 		<input type="text" name="dogName" id="dogName" value="${sessionScope.principal.dogname}">
-		</div>
-		<div>
-	 		생일 *
-	 		<input type="date" name="bday" id="bday" value="${sessionScope.principal.birthday}">
-		</div>
-		<button type="submit">수정하기</button>
-	</form> --%>
+
 	
 	<div id="joinForm">
   	<div class="container">
