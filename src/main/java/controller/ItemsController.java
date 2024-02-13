@@ -27,6 +27,7 @@ public class ItemsController extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    //주문페이지를 만들자.
     protected void process(HttpServletRequest req, HttpServletResponse res)throws ServletException, IOException { 
     	String cmd = req.getParameter("cmd");
     	System.out.println(cmd);

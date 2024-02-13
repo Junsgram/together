@@ -15,12 +15,12 @@ public class CartDao {
 	Connection conn = DBConnection.getConnection();
 	public int insert(CartSaveReqDto dto) {
 		int result = 0;
-		String query = "insert into item_cart(num,id, title,price,order_quantity,ofile)"
-						+" values(Coalese(MAX(num),0)+1,?,?,?,?,?)";
+		String query = "insert into item_cart(num, id, title,price,order_quantity,ofile)"
+						+" values((SELECT NVL(MAX(num), 0) FROM item_cart) + 1,?,?,?,?,?)";
 		//Coalese(MAX(num),0) -> coalesece함수는 차례차례 인수를 검사하면서 null이 아닌 첫번쨰 인수를 반환한다.
 		PreparedStatement psmt = null;
 		try {
-			psmt = conn.prepareStatement(query);
+			psmt = conn.prepareStatement(query);;
 			psmt.setString(1, dto.getId());
 			psmt.setString(2, dto.getTitle());
 			psmt.setInt(3, dto.getPrice());

@@ -4,13 +4,14 @@ drop table items;
 
 주문 db
 create table item_order(
-	item_order_num 시퀀스, 유니크 
-	item_num
-	buyer_Id
-	buyer_email
-	buyer_name
-	buyer_tel
-	buyer_addr
+	order_num num not null, 
+	item_num num not null,
+	buyer_Id varchar2(30) not null,
+	buyer_email varchar2(50) not null,
+	buyer_name //우리 이름을 안받네?
+	buyer_tel number not null, //call1+call2+call3
+	buyer_addr varchar2(100) not null
+	);
 	
 장바구니db - 회원ID, num(123),title, price,quantity,총가격?
 num값은 시퀀스로 하지않고 VALUES 
@@ -60,7 +61,43 @@ nomaxvalue
 nocycle
 nocache;
 
+create table member (
+    id varchar2(30) not null,
+    pw1 varchar2(30) not null,
+    pw2 varchar2(30) not null,
+    email varchar2(50) not null,
+    call1 number not null,
+    call2 number not null,
+    call3 number not null,
+    address varchar2(100) not null,
+    ofile varchar2(200),
+    dogname varchar2(30),
+    userRole varchar2(20) default 'USER',
+    userPoint number default 0,
+    birthday date not null,
+    primary key (id)
+); 
+alter table member rename column address to zipcode;
+alter table member add (addr1 varchar2(100));
+alter table member add (addr2 varchar2(100));
+ALTER TABLE member MODIFY call1 varchar2(10);
+ALTER TABLE member MODIFY call2 varchar2(10);
+ALTER TABLE member MODIFY call3 varchar2(10);
 
+create table community (
+    num number not null,
+    title varchar2(100) not null,
+    id varchar2(30) not null,
+    address varchar2(100) not null,
+    scontent varchar2(500),
+    lcontent varchar2(500),
+    likes number  default 0,
+    views number default 0,
+    stars number default 0,
+    ofile varchar2(300),
+    regidate date default sysdate,
+    primary key (num)
+);
 
 &^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
 로그아웃시 session에 userId삭제해도 되는지?
