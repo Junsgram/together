@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 public class EditReqDto {
 	private int num;
-	private String commuName;
+	private String title;
 	private String scontent;
 	private String lcontent;
 	private String ofile;

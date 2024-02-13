@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class ViewReqDto {
 	private int num;
 	private String id;
-	private String commuName;
+	private String title;
 	private String scontent;
 	private String lcontent;
 	private String address;
