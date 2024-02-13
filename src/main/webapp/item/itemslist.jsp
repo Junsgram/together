@@ -7,12 +7,6 @@
 
 
 <script>
-	//페이지가 로드 완료되면 장바구니 업데이트함.
-	//현재 itemlist에 해당 스크립트가 있어 itemlist페이지 집입시 작동함
-	//향후 헤더나 index 페이지로 이동 필요함.
-	$(document).ready(function() {
-	  getCartItemCount();
-	});
 	//변수로 ${i.id},${i.title},${i.price},${i.ofile},${i.quantity}를 받음.
 	function addcart(id,title,price,ofile,quantity){
 		//히든으로 아이템id를 받음.
@@ -42,30 +36,6 @@
 			alert(data.message);
 		})
 	}
-	function getCartItemCount() {
-	    // AJAX를 사용하여 서버로 요청을 보내고, 장바구니 리스트의 개수를 받아옵니다.
-	    // 서버의 API 엔드포인트를 호출하여 장바구니 리스트의 개수를 가져오는 예시입니다.
-	    // 실제로는 서버의 API 엔드포인트를 사용해야 합니다.
-	    $.ajax({
-	        url: '/together/cart?cmd=count_cart',
-	        method: 'GET',
-	        success: function(data) {
-	            // 서버로부터 받아온 장바구니 리스트의 개수를 업데이트합니다.
-	            updateCartCount(data.count);
-	        },
-	        error: function(error) {
-	        	alert('오류가 발생했습니다');
-	            console.error('장바구니 리스트의 개수를 가져오는 동안 오류가 발생했습니다:', error);
-	        }
-	    });
-	}
-	function updateCartCount(count) {
-	    var cartCountElement = document.getElementById("cartCount");
-	    cartCountElement.innerText = count;
-	}
-		
-	   
-
 </script>
 
 <%
