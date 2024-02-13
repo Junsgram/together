@@ -21,14 +21,14 @@ public class HouseCommentDAO {
 	//댓글 등록
 	public int save(HouseSaveReqDTO dto) {
 		int result = 0;
-		String sql = "insert into housecomment (id,houseNum,userid,content)"
+		String sql = "insert into housecomment (comnum,houseNum,userid,content)"
 				+ " values(house_com_seq.nextval,?,?,?)";
 		psmt = null;
 		try {
 			psmt=con.prepareStatement(sql);
 			psmt.setInt(1, dto.getNum());
 			psmt.setString(2, dto.getUserId());
-			psmt.setString(3, dto.getComment());
+			psmt.setString(3, dto.getContent());
 			result = psmt.executeUpdate();
 			if(result ==1 ) {
 				//현재 시퀀스 번호를 조회해서 result변수에 할당
@@ -52,24 +52,24 @@ public class HouseCommentDAO {
 	}
 	
 	//댓글 리스트
-	public List<HouseFindRespDTO> findAll(int id) {
+	public List<HouseFindRespDTO> findAll(int housenum) {
 		List<HouseFindRespDTO> comments = new ArrayList<HouseFindRespDTO>();
-		String sql = "select m.id,c.id,c.userId,c.houseNum,c.content"
+		String sql = "select m.id,c.comnum,c.userId,c.houseNum,c.content,c.createdate"
 				+ " from member m inner join housecomment c "
 				+ " on m.id = c.userid "
-				+ " where c.bookid = ? order by c.id desc";
+				+ " where c.housenum = ? order by c.id desc";
 		psmt = null;
 		try {
 			psmt = con.prepareStatement(sql);
-			psmt.setInt(1, id);
+			psmt.setInt(1, housenum);
 			rs = psmt.executeQuery();
 			while(rs.next()) {
 				HouseFindRespDTO dto = new HouseFindRespDTO();
-				dto.setMemberId(rs.getString(1));
+				dto.setUserId(rs.getString(1));
 				dto.setId(rs.getInt(2));
-				dto.setUserId(rs.getString(3));
-				dto.setHouseNum(rs.getInt(4));
-				dto.setContent(rs.getString(5));
+				dto.setHouseNum(rs.getInt(3));
+				dto.setContent(rs.getString(4));
+				dto.setCreateDate(rs.getDate(5));
 				comments.add(dto);
 			}
 		} catch (SQLException e) {
@@ -87,7 +87,7 @@ public class HouseCommentDAO {
 	//댓글 아이디 찾기
 	public HouseFindRespDTO findId(int id) {
 		HouseFindRespDTO dto = null;
-		String sql = "select m.id, c.id, c.userId, c.houseNum, c.content"
+		String sql = "select m.id, c.comnum, c.houseNum, c.content"
 				+ " from member m inner join housecomment c "
 				+ " on m.id = c.userid"
 				+ " where c.id = ?";
@@ -99,11 +99,10 @@ public class HouseCommentDAO {
 			rs = psmt.executeQuery();
 			if(rs.next()) {
 				dto = new HouseFindRespDTO();
-				dto.setMemberId(rs.getString(1));
 				dto.setId(rs.getInt(2));
-				dto.setUserId(rs.getString(3));
-				dto.setHouseNum(rs.getInt(4));
-				dto.setContent(rs.getString(5));
+				dto.setUserId(rs.getString(1));
+				dto.setHouseNum(rs.getInt(3));
+				dto.setContent(rs.getString(4));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

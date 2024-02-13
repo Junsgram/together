@@ -20,16 +20,18 @@
 </style>
 <script>
 	//댓글 들록 시 페이지 이동 없이 댓글 리스트 추가
-	function commentSave(userId,houseName) {
+	function commentSave(userId,housenum) {
+		console.log(userId);
+		console.log(housenum);
 		let data = {
 				userId : userId,
-				houseName : houseName,
+				housenum : housenum,
 				content : $("#content").val()
 		};
 		
 		$.ajax({
 			type : "post",
-			url : "together/housecomment?cmd=save",
+			url : "/together/housecomment?cmd=save",
 			//data의 매개변수는 위에 선언한 data 변수
 			data : JSON.stringify(data),
 			//JSON 데이터 전송 타입은 application/json
@@ -148,7 +150,7 @@
 							<!--  타입을 버튼타입 및 onclick이벤트로 commentSave()메소드를 활용하여  -->
 							<!--  commentSave메소드 매개변수로 bookid와 userid를 el구문으로 작성 -->
 							<button  type = "button" 
-							onclick = "commentSave(${sessionScope.principal.id},${views.houseName})" 
+							onclick = "commentSave('${sessionScope.principal.id}',${views.num})" 
 							class="btn btn-primary pull-right">댓글쓰기</button>
 						</div>
 						

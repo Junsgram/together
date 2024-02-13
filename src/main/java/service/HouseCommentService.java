@@ -27,8 +27,8 @@ public class HouseCommentService {
 	}
 	
 	//해당하는 댓글 조회
-	public HouseFindRespDTO detailComment(int id) {
+	public HouseFindRespDTO detailComment(int housenum) {
 		this.commentDAO = new HouseCommentDAO();
-		return commentDAO.findId(id);
+		return commentDAO.findId(housenum);
 	}
 }
