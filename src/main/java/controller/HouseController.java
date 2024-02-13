@@ -15,13 +15,14 @@ import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 
-
+import service.HouseCommentService;
 import service.HouseService;
 import util.Script;
 import domain.board.House.DTO.ListReqDTO;
 import domain.board.House.DTO.ViewReqDTO;
 import domain.board.House.DTO.WriteReqDTO;
 import domain.user.User;
+import domain.Jcomment.HouseFindRespDTO;
 import domain.board.House.DTO.EditReqDTO;
 
 
@@ -132,6 +133,12 @@ public class HouseController extends HttpServlet {
         			System.out.println(id.getId() +"," + views.getId());
         			views.setViews(hs.visitUpdate(num));
         		}
+    		}
+    		//댓글 리스트
+    		HouseCommentService hcs = new HouseCommentService();
+    		List<HouseFindRespDTO> comments = hcs.list(num);
+    		if(comments.size() > 0) {
+    			req.setAttribute("comments", comments);
     		}
     		req.setAttribute("views",views);
     		req.getRequestDispatcher("house/HouseView.jsp")

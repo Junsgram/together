@@ -22,13 +22,18 @@ public class HouseCommentService {
 	}
 	
 	//댓글 목록 조회
-	public List<HouseFindRespDTO> list(int id){
-		return commentDAO.findAll(id);
+	public List<HouseFindRespDTO> list(int housenum){
+		return commentDAO.findAll(housenum);
 	}
 	
 	//해당하는 댓글 조회
 	public HouseFindRespDTO detailComment(int housenum) {
 		this.commentDAO = new HouseCommentDAO();
 		return commentDAO.findId(housenum);
+	}
+	
+	//댓글 삭제
+	public int delete(int num) {
+		return commentDAO.delete(num);
 	}
 }

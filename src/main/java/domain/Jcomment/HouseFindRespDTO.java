@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class HouseFindRespDTO {
-	private int id;
+	private int comnum;
 	private int houseNum;
 	private String userId;
 	private String content;

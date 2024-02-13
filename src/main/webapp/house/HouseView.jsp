@@ -39,7 +39,9 @@
 			//응답 받을 데이터 타입을 json으로 지정하여 객체로 변환 JSON.parse()
 			dataType: "json"
 		}).done(function(result) {
-			if(result.statusCode > 0) {
+			console.log(result);
+			console.log(result.StatusCode);
+			if(result.StatusCode > 0) {
 				console.log(result);
 				addComment(result.data);
 			}
@@ -53,12 +55,15 @@
 	//댓글 추가하기
 	//data 변수는 아작스로 전달받은 data 변수
 	function addComment(data) {
-		let item = "<li id= 'reply-"+data.num+"' class='media'>"
+		let item = "<li id= 'reply-"+data.comnum+"' class='media'>"
 		 + "<div class='media-body'> "
-		 + "<strong class='text-primary'>"+data.id+"</strong> "
-		 + "<p> "+data.content+" </p> </div> <div class='m-2'> "
-		 + "<i onclick='deleteComment("+data.num+")' class='material-icons'>delete</i>"
+		 + "<strong class='text-primary'>"+data.userId+"</strong> "
+		 + "<p> "+data.content+" </p> "
+		 + "<p>" +data.createDate +" </p> "
+		 + "</div> <div class='m-2'> "
+		 + "<i onclick='deleteComment("+data.comnum+")' class='material-icons'>delete</i>"
 		 + "</div> </li>" ;
+		$("#reply__list").prepend(item);
 	}
 	//댓글 삭제하기
 	function deleteComment(num) {
@@ -70,7 +75,7 @@
 				dataType: "json"
 		}).done(function(result) {
 			console.log(result);
-			if(result.statusCode == 1) {
+			if(result.StatusCode == 1) {
 				console.log(result);
 				//선택한 id를 삭제 (#reply-?)는 li의 id번호
 				$("#reply-"+num).remove();
@@ -162,9 +167,9 @@
 						
 								<c:forEach var ="c" items ="${comments}">
 								<!-- 댓글 아이템 -->
-								<li id="reply-${c.id}" class="media">		
+								<li id="reply-${c.comnum}" class="media">		
 									<div class="media-body">
-										<strong class="text-primary">${c.userName}</strong>
+										<strong class="text-primary">${c.userId}</strong>
 										<p>
 											${c.content}
 										</p>
@@ -175,7 +180,7 @@
 									<c:if test = "${sessionScope.principal.id == c.userId}">
 									<div class="m-2">
 		
-										<i onclick="deleteComment(${c.id})" class="material-icons">delete</i>
+										<i onclick="deleteComment(${c.comnum})" class="material-icons">delete</i>
 
 									</div>
 									</c:if>
