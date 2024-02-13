@@ -116,29 +116,6 @@
 	</div>
 	
 	
-		<!--댓글 -->
-		<!-- <div>
-			<b>Comment</b>
-			<br/>
-			<textarea name = "comment" id ="comment" placeholder = "댓글을 입력해주세요 !" rows= "2" ></textarea>
-			<button type = "button" >댓글 쓰기</button>
-		</div> -->
-		<%-- <!-- 댓글 리스트 시작 -->
-		<ul>
-			<c:forEach var = "c" items = "${comments}" >
-				<div>
-					<p> ${c.content}</p>
-					<p>${c.createDate}</p>
-				</div>
-				<c:if test ="${sessionScope.principal.id == c.userId}">
-				<div>
-					삭제하기
-				</div>
-				</c:if>
-			</c:forEach>
-		</ul>
-		 --%>
-		
 		<!-- 댓글 박스 -->
 	<div class="row bootstrap snippets">
 		<div class="col-md-12">
