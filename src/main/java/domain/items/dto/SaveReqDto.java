@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SaveReqDto {
+private String id;
 private String title;
 private String scontent;
 private String lcontent;

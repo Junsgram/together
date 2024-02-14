@@ -44,13 +44,14 @@
 
 	                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath()%>/commu?cmd=list&page=0">커뮤니티</a></li>
                     </ul>
-                    <form class="d-flex">
+                    <!-- form태그에 action속성으로 설정시 주소가 이상하게 입력되어 a태그로 바꿈. -->
+                    <a class="d-flex" href="/together/cart?cmd=in_cart" style="text-decoration: none;">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span id="cartCount" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                         </button>
-                    </form>
+                    </a>
                 </div>
             </div>
         </nav>
@@ -77,6 +78,33 @@
 				form.setAttribute('action', '<%=request.getContextPath()%>/user?cmd=editForm');
 				document.body.appendChild(form);
 				form.submit();
+			}
+			//페이지가 로드 완료되면 장바구니 업데이트함.
+			//현재 itemlist에 해당 스크립트가 있어 itemlist페이지 집입시 작동함
+			//향후 헤더나 index 페이지로 이동 필요함.
+			$(document).ready(function() {
+			  getCartItemCount();
+			});
+			function getCartItemCount() {
+			    // AJAX를 사용하여 서버로 요청을 보내고, 장바구니 리스트의 개수를 받아옵니다.
+			    // 서버의 API 엔드포인트를 호출하여 장바구니 리스트의 개수를 가져오는 예시입니다.
+			    // 실제로는 서버의 API 엔드포인트를 사용해야 합니다.
+			    $.ajax({
+			        url: '/together/cart?cmd=count_cart',
+			        method: 'GET',
+			        success: function(data) {
+			            // 서버로부터 받아온 장바구니 리스트의 개수를 업데이트합니다.
+			            updateCartCount(data.count);
+			        },
+			        error: function(error) {
+			        	alert('오류가 발생했습니다');
+			            console.error('장바구니 리스트의 개수를 가져오는 동안 오류가 발생했습니다:', error);
+			        }
+			    });
+			}
+			function updateCartCount(count) {
+			    var cartCountElement = document.getElementById("cartCount");
+			    cartCountElement.innerText = count;
 			}
 		
 		</script>

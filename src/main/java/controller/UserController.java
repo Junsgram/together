@@ -83,7 +83,9 @@ public class UserController extends HttpServlet {
 		else if (cmd.equals("logout")) {
 			HttpSession session = req.getSession();
 			session.removeAttribute("principal");
+			session.removeAttribute("userId");
 			Script.alertMsg("로그아웃 되었습니다.", "main?cmd=page", res);
+
 		}
 		// 회원가입 페이지 요청
 		else if (cmd.equals("joinForm")) {
