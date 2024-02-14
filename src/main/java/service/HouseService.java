@@ -20,6 +20,8 @@ public class HouseService {
 	}
 	//상세보기
 	public ViewReqDTO detail(int id) {
+		//아작스가 close되면 값을 받아올 수 없음
+		this.dao = new HouseDAO();
 		return dao.detail(id);
 	}
 	//리스트 출력

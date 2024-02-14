@@ -4,8 +4,7 @@ import lombok.Data;
 
 @Data
 public class HouseSaveReqDTO {
-	private int id;
-	private int num;
+	private int housenum;
 	private String userId;
-	private String comment;
+	private String content;
 }
