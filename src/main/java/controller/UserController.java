@@ -74,7 +74,7 @@ public class UserController extends HttpServlet {
 			session.setAttribute("principal", user);
 			session.setAttribute("userId", userId);
 			System.out.println(session.getAttribute("principal"));
-			req.getRequestDispatcher("index.jsp").forward(req, res);
+			req.getRequestDispatcher("main?cmd=page").forward(req, res);
 			} else {
 				Script.back("로그인실패", res);
 			}
@@ -84,7 +84,8 @@ public class UserController extends HttpServlet {
 			HttpSession session = req.getSession();
 			session.removeAttribute("principal");
 			session.removeAttribute("userId");
-			Script.alertMsg("로그아웃 되었습니다.", "/together/index.jsp", res);
+			Script.alertMsg("로그아웃 되었습니다.", "main?cmd=page", res);
+
 		}
 		// 회원가입 페이지 요청
 		else if (cmd.equals("joinForm")) {
@@ -161,7 +162,7 @@ public class UserController extends HttpServlet {
 			 
 			 int result = userService.join(joinDto); 
 			 if (result==1) { 
-				 Script.alertMsg("회원 가입이 완료되었습니다.", "/together/index.jsp", res);
+				 Script.alertMsg("회원 가입이 완료되었습니다.", "main?cmd=page", res);
 			 }else { 
 				 Script.back("회원가입에 실패했습니다.", res); 
 			 }
@@ -252,7 +253,7 @@ public class UserController extends HttpServlet {
 			 int result = userService.edit(editDto); 
 			
 			 if (result==1) { 
-				 Script.alertMsg("회원 정보 수정이 완료되었습니다.", "/together/index.jsp", res);
+				 Script.alertMsg("회원 정보 수정이 완료되었습니다.", "main?cmd=page", res);
 				 
 			 }else { 
 				 Script.back("회원 정보 수정에 실패했습니다.", res); 
