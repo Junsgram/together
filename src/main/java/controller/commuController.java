@@ -19,7 +19,9 @@ import domain.commu.dto.EditReqDto;
 import domain.commu.dto.ListReqDto;
 import domain.commu.dto.ViewReqDto;
 import domain.commu.dto.WriteReqDto;
+import domain.commuComment.dto.FindResDto;
 import domain.user.User;
+import service.CommuCommentService;
 import service.commuService;
 
 
@@ -105,6 +107,12 @@ public class commuController extends HttpServlet {
         			System.out.println(id.getId() +"," + dto.getId());
         			dto.setViews(cs.visitUpdate(num));
         		}
+    		}
+    		//댓글리스트 전달하기
+    		CommuCommentService ccs = new CommuCommentService();
+    		List<FindResDto> comments = ccs.findAll(num);
+    		if (comments.size() > 0 ) {
+    			req.setAttribute("comments", comments);
     		}
     		req.setAttribute("dto",dto);
     		req.getRequestDispatcher("community/community_View.jsp")

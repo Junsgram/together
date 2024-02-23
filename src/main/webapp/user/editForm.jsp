@@ -65,7 +65,6 @@ function passCheck(){
 					<div class="mb-3">
 			            <label for="userId">아이디</label>
 			            <input type="text" name="userId" id="userId" value="${sessionScope.principal.id}" class="form-control" readonly>
-			            <button type="button" onclick = "idCheck()" class="btn btn-primary btn-xs"> 아이디 중복 체크</button>
 			        </div>
           
           			<div class="mb-3">
