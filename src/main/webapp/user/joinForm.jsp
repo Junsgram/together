@@ -13,38 +13,37 @@
 	//form submit할 때 호출되는 함수
 	function valid(){
 		if(!isChecking){
-			alert("아이디 중복 체크를 해주세요.");
+			alert("이메일 중복 체크를 해주세요.");
 		}
 		return isChecking;
 	} 
 	
 	//아이디 중복체크 버튼 클릭할 때 호출되는 함수
-	function idCheck(){
-		let userId = $("#userId").val();
-		console.log("아이디 : "+userId);
-		if (userId==""){
+	function emailCheck(){
+		let email = $("#email").val();
+		console.log("이메일 : "+email);
+		if (email==""){
 			alert("아이디를 입력해주세요!");
 		}else{
 			$.ajax({
 				type : "post",
 				url : "/together/user?cmd=userIdCheck",
-				data : userId,
+				data : email,
 				contentType : "text/plain; charset=utf-8",
 				dataType : "text"
 				}).done(function(data){
 	 				if(data=="ok"){
 					isChecking = true;
-					alert("사용이 가능한 아이디입니다.");
+					alert("사용이 가능한 이메일입니다.");
 					}else{
 					isChecking = false;
-					alert("이미 사용하고 있는 아이디입니다.");
+					alert("이미 사용하고 있는 이메일입니다.");
 					} 
 				})
 			}
 		}
 	
 </script>
-
 
 <div id="joinForm">
   	<div class="container">
@@ -65,9 +64,9 @@
           			<br>
 
 					<div class="mb-3">
-			            <label for="userId">아이디</label>
-			            <input type="text" name="userId" id="userId" placeholder="사용할 아이디를 입력해주세요." class="form-control" required>
-			            <button type="button" onclick = "idCheck()" class="btn btn-primary btn-xs"> 아이디 중복 체크</button>
+			            <label for="email">이메일</label>
+			            <input type="email" name="email" id="email" placeholder="사용할 이메일을 입력해주세요." class="form-control" required>
+			            <button type="button" onclick = "emailCheck()" class="btn btn-primary btn-xs"> 이메일 중복 체크</button>
 			        </div>
           
           			<div class="mb-3">
@@ -81,11 +80,11 @@
             			<input type="password" name="userPass2" id="userPass2" placeholder="비밀번호 확인을 위해 한번더 입력해 주세요." class="form-control" required> 
           			</div>
           			<div id = "resultDiv2"></div>
-          			</br>
           			<div class="mb-3">
-            			<label for="userPass1">이메일</label>
-            			<input type="text" name="email" id="email" placeholder="이메일을 입력해 주세요." class="form-control" required> 
+            			<label for="username">이름</label>
+            			<input type="text" name="username" id="username" placeholder="이름을 입력해주세요." class="form-control" required> 
           			</div>
+          			</br>
           			<div class="mb-3">
 	    				<label for="call1">전화번호</label>
 	    				</br>
@@ -122,6 +121,21 @@
     	</div>
   	</div>
 </div>  	
+<script>
+	let email = "${sessionScope.kakao.email}";
+	let username = "${sessionScope.kakao.username}";
+	console.log(email);
+	console.log(username);
+	if (email){
+		isChecking = true;
+		$("#email").val(email);
+		$("#email").attr("readonly", true);
+		$("#username").val(username);
+		$("#username").attr("readonly", true);
+	}
+	
+</script>
+
   	
   	
   	
@@ -225,4 +239,5 @@ zipbtn.addEventListener("click",()=>{
 	}
 
 </script>
+
 <%@ include file="../include/footer.jsp" %>

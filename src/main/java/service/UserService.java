@@ -6,6 +6,7 @@ import domain.user.User;
 import domain.user.UserDao;
 import domain.user.dto.EditReqDto;
 import domain.user.dto.JoinReqDto;
+import domain.user.dto.KakaoLoginReqDto;
 import domain.user.dto.LoginReqDto;
 
 public class UserService {
@@ -24,8 +25,8 @@ public class UserService {
 	}
 	
 	//2. 아이디 중복 확인 메소드
-	public int idCheck(String userId) {
-		return userDao.findById(userId);
+	public int emailCheck(String email) {
+		return userDao.findById(email);
 	}
 	
 	//3. 회원가입 메소드
@@ -45,5 +46,9 @@ public class UserService {
 	public User editValue(String userId) {
 		return userDao.findByIdReturnUser(userId);
 	}
-
+	//6. 카카오 로그인 메소드
+	public User kakaoLogin(KakaoLoginReqDto dto) {
+		return userDao.findByUsernameAndEmail(dto);
+	}
+	
 }
