@@ -18,11 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
+import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
 
 import domain.user.User;
 import domain.user.dto.EditReqDto;
 import domain.user.dto.JoinReqDto;
+import domain.user.dto.KakaoLoginReqDto;
 import domain.user.dto.LoginReqDto;
 import service.UserService;
 import util.Script;
@@ -40,6 +42,7 @@ public class UserController extends HttpServlet {
 		// cmd값 받기
 		String cmd = req.getParameter("cmd");
 		UserService userService = new UserService();
+		req.setCharacterEncoding("utf-8");
 
 		// 로그인 페이지 요청
 		if (cmd.equals("loginForm")) {
@@ -47,32 +50,32 @@ public class UserController extends HttpServlet {
 		}
 		// 로그인 포스트 요청
 		else if (cmd.equals("login")) {
-			String userId = req.getParameter("userId");
+			String userEmail = req.getParameter("email");
 			String userPass = req.getParameter("userPass");
 			String remember = req.getParameter("remember");
 			
-			System.out.println(userId);
+			System.out.println(userEmail);
 			System.out.println(userPass);
 			
 			LoginReqDto logDto = new LoginReqDto();
-			logDto.setId(userId);
+			logDto.setEmail(userEmail);
 			logDto.setPw2(userPass);
 			User user = userService.login(logDto);
 			HttpSession session = req.getSession();
 			if (user != null) {
 				if (remember!=null&&remember.equals("true")) {
 					//쿠키 생성 후 쿠키에 값 저장
-					Cookie cookie = new Cookie("rememberId", userId);
+					Cookie cookie = new Cookie("rememberId", userEmail);
 					//유지 시간 일주일로 설정
 					cookie.setMaxAge(60*60*24*7);
 					res.addCookie(cookie);
 				}else {
-					Cookie cookie = new Cookie("rememberId", userId);
+					Cookie cookie = new Cookie("rememberId", userEmail);
 					cookie.setMaxAge(0);
 					res.addCookie(cookie);
 				}
 			session.setAttribute("principal", user);
-			session.setAttribute("userId", userId);
+			session.setAttribute("userId", userEmail);
 			System.out.println(session.getAttribute("principal"));
 			req.getRequestDispatcher("main?cmd=page").forward(req, res);
 			} else {
@@ -84,18 +87,39 @@ public class UserController extends HttpServlet {
 			HttpSession session = req.getSession();
 			session.removeAttribute("principal");
 			session.removeAttribute("userId");
+			session.removeAttribute("kakao");
 			Script.alertMsg("로그아웃 되었습니다.", "main?cmd=page", res);
 
+		}
+		//카카오 로그인 요청
+		else if (cmd.equals("kakaologin")) {
+			//입력스트림 생성
+			BufferedReader br = req.getReader();
+			String data = br.readLine();
+			System.out.println("카카오로그인 data : "+data);
+			Gson gson = new Gson();
+			KakaoLoginReqDto dto = gson.fromJson(data, KakaoLoginReqDto.class);
+			User userEntity = userService.kakaoLogin(dto);
+			//출력스트림 생성
+			PrintWriter out = res.getWriter();
+			HttpSession session = req.getSession();
+			session.setAttribute("kakao", dto);
+			if (userEntity!=null) {
+				session.setAttribute("principal", userEntity);
+				out.print("ok");
+			}else {
+				out.print("fail");
+			}
 		}
 		// 회원가입 페이지 요청
 		else if (cmd.equals("joinForm")) {
 			req.getRequestDispatcher("/user/joinForm.jsp").forward(req, res);
 		}
-		// 아이디 중복 확인 요청 (ajax요청)
+		// 이메일 중복 확인 요청 (ajax요청)
 		else if (cmd.equals("userIdCheck")) {
 			BufferedReader br = req.getReader();
-			String userId = br.readLine();
-			int result = userService.idCheck(userId);
+			String email = br.readLine();
+			int result = userService.emailCheck(email);
 			PrintWriter out = res.getWriter();
 			if (result == 0) {
 				out.print("ok");
@@ -131,7 +155,7 @@ public class UserController extends HttpServlet {
 			oldFile.renameTo(newFile);
 
 			 //다른 input값 받기 
-			 String userId = multiReq.getParameter("userId"); 
+			 
 			 String userPass1 = multiReq.getParameter("userPass1"); 
 			 String userPass2 = multiReq.getParameter("userPass2"); 
 			 String email = multiReq.getParameter("email"); 
@@ -143,7 +167,9 @@ public class UserController extends HttpServlet {
 			 String addr2 = multiReq.getParameter("addr2"); 
 			 String bday = multiReq.getParameter("bday");
 			 String dogName = multiReq.getParameter("dogName");
-			  
+			 String userId = email.substring(0,email.lastIndexOf("@"));
+			 String username = multiReq.getParameter("username");
+			 
 			 //JoinReqDto객체 생성하기 
 			 JoinReqDto joinDto = new JoinReqDto();
 			 joinDto.setId(userId); 
@@ -159,6 +185,7 @@ public class UserController extends HttpServlet {
 			 joinDto.setOfile(newFileName); 
 			 joinDto.setBirthday(bday);
 			 joinDto.setDogname(dogName); 
+			 joinDto.setUsername(username);
 			 
 			 int result = userService.join(joinDto); 
 			 if (result==1) { 

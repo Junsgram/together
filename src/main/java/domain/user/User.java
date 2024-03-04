@@ -17,6 +17,7 @@ public class User {
 	private String pw1;
 	private String pw2;
 	private String email;
+	private String username;
 	private String call1;
 	private String call2;
 	private String call3;
