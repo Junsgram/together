@@ -43,11 +43,18 @@
 	List<Items> items = (List<Items>) request.getAttribute("items");
 %>
 <!--헤더  -->
-
+<header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">We are Together</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">With this shop Together hompage</p>
+                </div>
+            </div>
+        </header>
 <h2>아이템목록</h2>
 <br/>
-<a class="btn btn-outline-dark mt-auto" href="<%=request.getContextPath()%>/items?cmd=save">상품등록</a>
-<a class="btn btn-outline-dark mt-auto" href="<%=request.getContextPath()%>/cart?cmd=in_cart">장바구니</a>
+<a class="btn btn-dark" href="<%=request.getContextPath()%>/items?cmd=save">상품등록</a>
+<a class="btn btn-dark" href="<%=request.getContextPath()%>/cart?cmd=in_cart">장바구니</a>
 <br/>
 
 	<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" style = "border-bottom : 1px solid black; margin-top : 30px;">
@@ -70,7 +77,7 @@
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="<%=request.getContextPath()%>/items?cmd=detail&id=${i.id }">상세보기</a></div>
                             </div>
-								  <button type="button" onclick="addcart('${sessionScope.userId}','${i.title}','${i.price}','${i.ofile}','${i.quantity}')"  class="btn btn-primary">장바구니 담기</button>
+								  <button type="button" onclick="addcart('${sessionScope.userId}','${i.title}','${i.price}','${i.ofile}','${i.quantity}')"  class="btn btn-dark">장바구니 담기</button>
 						 </div>
                        
                      </div>

@@ -62,25 +62,24 @@ var makeMerchantUid = hours +  minutes + seconds + milliseconds;
 	<h3>상품상세보기</h3>
 	<br />
 	<br />
+	<div style="display: flex; justify-content: flex-end; gap: 10px;">
 	<form action="<%=request.getContextPath()%>/items?cmd=delete" method="post">
 	  	<input type="hidden" name="item_num" id="item_num" value="${item.num}">
-	  <button type="submit" id="delete"  class="btn btn-primary">삭제</button>
+	  <button type="submit" id="delete"  class="btn btn-dark">삭제</button>
 		</form>
-	<button type="button" id="pay"  class="btn btn-primary" onclick="requestPay()">결제</button>
-	<br/>
-	<br/>
+	<button type="button" id="pay"  class="btn btn-dark" onclick="requestPay()">결제</button>
+	</div>
 	<h3 class="m-2">
 		<b>${item.title}</b>
 	</h3>
 	<hr />
 	<div class="m-2" style="display:flex;">
-		<div style="width:50%"> stars : <i>${item.stars}</i></div>
 		<div style="width:50%"> 사진 : <i><img src="item/img/${item.ofile}" /></i></div>
 	</div>
 	<hr />
 	<div class="m-2" style="display:flex;">
 		<div style="width:50%"> 가격 : <i>${item.price}</i></div>
-		<div style="width:50%"> 간단설명 : <i>${item.scontent}</i></div>
+		<div style="width:50%"> 분류 : <i>${item.scontent}</i></div>
 	</div>
 	<hr />
 	<div class="form-group">
