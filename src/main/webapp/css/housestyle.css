@@ -1,0 +1,24 @@
+@charset "UTF-8";
+
+#liketo {
+	background-image: url("house/img/likes/emptyheart.png");
+	background-size: cover;
+	width: 50px;
+	height: 50px;
+}
+
+#liketo.to {
+	border: 1px solid black;
+	background-image: url("house/img/likes/fullheart.png");
+	width: 50px;
+	height: 50px;
+}
+
+#housebox {
+	background-color : gray;
+	width : 1200px;
+	margin: 0 auto;
+}
+#title {
+	text-align : center;
+}
