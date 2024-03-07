@@ -25,6 +25,5 @@ public class Items {
 	private String ofile;
 	private Date regidate;
 	private int quantity;
-	
 
 }

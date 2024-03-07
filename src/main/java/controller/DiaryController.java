@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +21,9 @@ import domain.board.Diary.DTO.DeditReqDTO;
 import domain.board.Diary.DTO.DviewReqDTO;
 import domain.board.Diary.DTO.DwriteReqDTO;
 import domain.board.House.DTO.ViewReqDTO;
+import domain.diaryComment.DiaryFindRespDTO;
 import domain.user.User;
+import service.DiaryCommentService;
 import service.DiaryService;
 
 
@@ -131,6 +134,12 @@ public class DiaryController extends HttpServlet {
     			if(!id.getId().equals(diaryDTO.getId())) {
     				ds.visitcount(num);
     			}
+    		}
+    		//댓글 리스트
+    		DiaryCommentService dcs = new DiaryCommentService();
+    		List<DiaryFindRespDTO> comments = dcs.list(num);
+    		if(comments.size() > 0) {
+    			req.setAttribute("comments", comments);
     		}
     		DviewReqDTO dto = ds.views(num);
     		req.setAttribute("diaryViews",dto);

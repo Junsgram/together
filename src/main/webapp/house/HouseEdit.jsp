@@ -1,29 +1,83 @@
 <%@page import="domain.board.House.DTO.WriteReqDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ include file = "/include/header.jsp"%>
-	<h2> 게시글 수정 페이지입니다.</h2>
-	<div>
-		<form method = "post" action = "<%= request.getContextPath()%>/house?cmd=edit_process"
-				enctype = "multipart/form-data">
-			<input type ="hidden" name = "num" value ="${edit.num}" />
-			<input type ="hidden" name = "change_img" value = "${edit.ofile}" />
-			<p> 제목 : </p>
-			<input type = "text" name ="houseName" value= "${edit.houseName }" />
-			<p> 간략설명 : ${edit.scontent}</p>
-			<input type = "text"  name = "scontent" value ="${edit.scontent}"/>
-			<p> 세부설명 :${edit.lcontent} </p>
-			<input type = "text"  name = "lcontent" value ="${edit.lcontent}"/>
-			<input type ="file" id="picture" name = "ofile" />
-			사진 : <img id= "photo" src = "/together/house/img/${edit.ofile}" />
-			<br/>
-			<button type ="submit"> 수정하기 </button>
-		</form>
+	pageEncoding="UTF-8"%>
+<%@ include file="/include/header.jsp"%>
+<style>
+#pageTitle {
+	text-align: center;
+}
+#editSector {
+	width:100%;
+	max-width : 1400px;
+	margin: 0 auto;
+}
+#flexSector{
+	display:flex;
+}
+#textSector{
+	width:50%;
+	padding: 20px;
+}
+#picSector{
+	width:50%;
+	text-align: center;
+}
+#form1 {
+	float: right;
+}
+.file_button{
+  padding: 6px 25px;
+  background-color:#FF6600;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+  #photo {
+ 	width: 500px;
+ 	height: 500px;
+ 	background-size:cover;
+ 	}
+ #submitBtn {
+	text-align:center;
+ }
+}
+</style>
+<div id="editSector">
+	<h2 id="pageTitle">게시글 수정 페이지입니다.</h2>
+	<div >
 		<form>
-			<button> 삭제하기 </button>
+			<button class="btn btn-primary pull-right" id="form1">삭제하기</button>
 		</form>
+		<form method="post"
+			action="<%=request.getContextPath()%>/house?cmd=edit_process"
+			enctype="multipart/form-data">
+			<input type="hidden" name="num" value="${edit.num}" />
+			 <input type="hidden" name="change_img" value="${edit.ofile}" />
+			 <div id="flexSector">
+				 <div id="picSector">
+				 	<input type="file" style="display:none;" id="picture" name="ofile" />
+					<br/> <img id="photo" src="/together/house/img/${edit.ofile}" /> <br />
+					<label class="file_button" for="picture">
+				 		파일 업로드
+				 	</label>
+				</div>
+				 <div id="textSector">
+					<p> 제목 :</p>
+					<input type="text" name="houseName" value="${edit.houseName }" />
+					<p>간략설명 : </p>
+					<textarea rows="3" cols="52.5"  name="scontent">${edit.scontent}</textarea> 
+					<p>세부설명 :</p>
+					<textarea rows="10" cols="52.5" name="lcontent">${edit.lcontent}</textarea> 
+				</div>
+			</div>
+			<div id="submitBtn">
+				<button class="btn btn-primary pull-right" type="submit">수정하기</button>
+			</div>
+		</form>
+		
 	</div>
-	<script>
+</div>
+<script>
 		let inputimg = document.querySelector("#picture");
 		let pic = document.querySelector("#photo");
 		
@@ -34,9 +88,8 @@
 			reader.onload = function(e) {
 				console.log(e);
 				pic.setAttribute("src",e.target.result);
-				pic.setAttribute("style", "width: 300px;");
 			};
 		});
 	</script>
-	
-<%@ include file = "/include/footer.jsp"%>
+
+<%@ include file="/include/footer.jsp"%>
