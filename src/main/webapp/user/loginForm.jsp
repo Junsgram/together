@@ -88,7 +88,7 @@
       			<div>
       				<p onclick="kakaoLogin()">
       					<a href="javascript:void(0)">
-      						<img src="/together/kakao_login_medium_wide.png" width="230"/>
+      						<img src="/together/kakao_login_medium_wide.png" width="300"/>
       					</a>
       				</p>
       			</div>

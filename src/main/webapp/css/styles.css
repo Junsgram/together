@@ -10829,11 +10829,11 @@ textarea.form-control-lg {
     #loginForm {
       min-height: 100vh;
 
-      background: -webkit-gradient(linear, left bottom, right top, from(#92b5db), to(#1d466c));
-      background: -webkit-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
-      background: -moz-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
-      background: -o-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
-      background: linear-gradient(to top right, #92b5db 0%, #1d466c 100%);
+      background: -webkit-gradient(linear, left bottom, right top, from(#6c757d), to(#495057));
+      background: -webkit-linear-gradient(bottom left, #6c757d 0%, #495057 100%);
+      background: -moz-linear-gradient(bottom left, #6c757d 0%, #495057 100%);
+      background: -o-linear-gradient(bottom left, #6c757d 0%, #495057 100%);
+      background: linear-gradient(to top right, #6c757d 0%, #495057 100%);
     }
 
     #loginForm .input-form {
@@ -10856,11 +10856,11 @@ textarea.form-control-lg {
     #joinForm {
       min-height: 100vh;
 
-      background: -webkit-gradient(linear, left bottom, right top, from(#92b5db), to(#1d466c));
-      background: -webkit-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
-      background: -moz-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
-      background: -o-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
-      background: linear-gradient(to top right, #92b5db 0%, #1d466c 100%);
+      background: -webkit-gradient(linear, left bottom, right top, from(#6c757d), to(#495057));
+      background: -webkit-linear-gradient(bottom left, #6c757d 0%, #495057 100%);
+      background: -moz-linear-gradient(bottom left, #6c757d 0%, #495057 100%);
+      background: -o-linear-gradient(bottom left, #6c757d 0%, #495057 100%);
+      background: linear-gradient(to top right, #6c757d 0%, #495057 100%);
     }
 
     #joinForm .input-form {
