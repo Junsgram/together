@@ -32,7 +32,7 @@
 							    <!-- House name-->
 								<h5 class="fw-bolder">${dto.title}</h5>
 								<p>${dto.scontent}</p>
-								<h6>작성자 : ${dto.id }</h6>
+								<h6>작성자 : ${sessionScope.principal.dogname }</h6>
 								<span>좋아요 : ${dto.likes}</span><span> 조회수 : ${dto.views}</span><span> 별점 : ${dto.stars}</span>
 							</div>
 						</div>
@@ -46,25 +46,25 @@
         </div>
         
        <!--  paging  -->
-        <div style = "text-align : center; padding-bottom : 30px;"">
+        <div style = "text-align : center; padding-bottom : 30px;">
         	<button class="btn btn-dark" onclick ="location.href = 'community?cmd=list&page=0'"> 처 음</button>
 			<c:choose>
 				<c:when test = "${page==0}">
-					<button class="btn btn-dark" onclick ="location.href ='community?cmd=list&page=${page-1}'" disabled> 이 전</button>
+					<button class="btn btn-dark" onclick ="location.href ='commu?cmd=list&page=${page-1}'" disabled> 이 전</button>
 				</c:when>
 				<c:otherwise>
-					<button class="btn btn-dark" onclick ="location.href ='community?cmd=list&page=${page-1}'" > 이 전</button>
+					<button class="btn btn-dark" onclick ="location.href ='commu?cmd=list&page=${page-1}'" > 이 전</button>
 				</c:otherwise>
 			</c:choose>
 			<c:choose>
 				<c:when test ="${page==lastPage}">
-					<button class="btn btn-dark" disabled onclick ="location.href = 'community?cmd=list&page=${page+1}'" >다 음</button>
+					<button class="btn btn-dark" disabled onclick ="location.href = 'commu?cmd=list&page=${page+1}'" >다 음</button>
 				</c:when>
 				<c:otherwise>
-					<button class="btn btn-dark" onclick ="location.href ='community?cmd=list&page=${page+1}'" >다 음</button>
+					<button class="btn btn-dark" onclick ="location.href ='commu?cmd=list&page=${page+1}'" >다 음</button>
 				</c:otherwise>
 			</c:choose>
-			<button class="btn btn-dark" onclick ="location.href ='community?cmd=list&page=${lastPage}'" > 마 지 막</button>
+			<button class="btn btn-dark" onclick ="location.href ='commu?cmd=list&page=${lastPage}'" > 마 지 막</button>
 		</div>
 	</div>
 <%@ include file="../include/footer.jsp" %>

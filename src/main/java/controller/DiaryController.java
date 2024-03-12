@@ -51,7 +51,6 @@ public class DiaryController extends HttpServlet {
     
     	//게시글 페이지 및 프로세스
     	if(cmd.equals("write")) {
-    		System.out.println("다이어리 작성");
     		if(session.getAttribute("principal") != null) {
     		req.getRequestDispatcher("/diary/DiaryWrite.jsp")
     		.forward(req, res);
@@ -113,7 +112,6 @@ public class DiaryController extends HttpServlet {
     	
     	//목록 페이지 이동 및 프로세스
     	else if(cmd.equals("list")) {
-    		System.out.println("리스트 프로세스 접근");
     		int page  = Integer.parseInt(req.getParameter("page"));
     		req.setAttribute("page", page);
     		List<DListReqDTO> lists = ds.list(page);
@@ -126,7 +124,6 @@ public class DiaryController extends HttpServlet {
     	
     	//상세보기 페이지 이동 및 프로세스
     	else if(cmd.equals("view")) {
-    		System.out.println("다이어리 상세보기");
     		int num = Integer.parseInt(req.getParameter("num"));
     		User id = (User) session.getAttribute("principal");
     		DviewReqDTO diaryDTO = ds.views(num);
@@ -149,7 +146,6 @@ public class DiaryController extends HttpServlet {
     	
     	//수정하기 페이지 이동 및 프로세스
     	else if(cmd.equals("edit")) {
-    		System.out.println("다이어리 수정페이지");
     		int num = Integer.parseInt(req.getParameter("num"));
     		DeditReqDTO dto = ds.edit(num);
     		req.setAttribute("edit",dto);
@@ -158,7 +154,6 @@ public class DiaryController extends HttpServlet {
     	}
     	
     	else if(cmd.equals("edit_process")) {
-    		System.out.println("다이어리 수정프로세스이동");
     		//이미지 업로드 부분 
     		//기존 이미지 값 변수에 할당
     	
@@ -189,7 +184,6 @@ public class DiaryController extends HttpServlet {
     		}
 
     		int num = Integer.parseInt(mr.getParameter("num"));
-    		System.out.print(num);
     		
     		String title = mr.getParameter("title");
     		String scontent = mr.getParameter("scontent");
@@ -211,7 +205,6 @@ public class DiaryController extends HttpServlet {
     	
     	//삭제 프로세스
     	else if(cmd.equals("delete")) {
-    		System.out.println("다이어리 삭제 프로세스");
     		int num = Integer.parseInt(req.getParameter("num"));
     		int result = ds.delete(num);
     		if(result == 1 ) {

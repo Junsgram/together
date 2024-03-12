@@ -45,8 +45,8 @@
 <div id="editSector">
 	<h2 id="pageTitle">게시글 수정 페이지입니다.</h2>
 	<div >
-		<form>
-			<button class="btn btn-primary pull-right" id="form1">삭제하기</button>
+		<form method="post" action="<%=request.getContextPath() %>/house?cmd=delete&num=${edit.num}">
+			<button type ="submit" class="btn btn-primary pull-right" id="form1">삭제하기</button>
 		</form>
 		<form method="post"
 			action="<%=request.getContextPath()%>/house?cmd=edit_process"

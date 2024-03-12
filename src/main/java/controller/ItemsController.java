@@ -48,8 +48,8 @@ public class ItemsController extends HttpServlet {
     		req.getRequestDispatcher("item/uploadProcess.jsp")
     		.forward(req, res);
     	}else if(cmd.equals("detail")) {
-    		String id = req.getParameter("id");
-    		Items item = itemsService.detail(id);
+    		String num = req.getParameter("num");
+    		Items item = itemsService.detail(num);
     		req.setAttribute("item", item);
     		req.getRequestDispatcher("item/detail.jsp")
     		.forward(req, res);

@@ -18,7 +18,7 @@
 				ofile: ofile,
 				quantity: quantity
 		};
-		
+		console.log(id);
 		//네트워크요청
 		$.ajax({
 			type:"post",
@@ -75,9 +75,9 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="<%=request.getContextPath()%>/items?cmd=detail&id=${i.id }">상세보기</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="<%=request.getContextPath()%>/items?cmd=detail&num=${i.num}">상세보기</a></div>
                             </div>
-								  <button type="button" onclick="addcart('${sessionScope.userId}','${i.title}','${i.price}','${i.ofile}','${i.quantity}')"  class="btn btn-dark">장바구니 담기</button>
+								  <button type="button" onclick="addcart('${sessionScope.principal.id}','${i.title}','${i.price}','${i.ofile}','${i.quantity}')"  class="btn btn-dark">장바구니 담기</button>
 						 </div>
                        
                      </div>

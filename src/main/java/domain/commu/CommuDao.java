@@ -48,7 +48,6 @@ public class CommuDao {
 	
 	//전체 게시글 목록 보기
 	public List<ListReqDto> list(int page){
-		System.out.println("게시글 목록 보기 요청");
 		con = DBConnection.getConnection();
 		List<ListReqDto> lists = new ArrayList<ListReqDto>();
 		String query = "select * from ("
@@ -75,7 +74,6 @@ public class CommuDao {
 						.regidate(rs.getDate("Regidate"))
 						.Ofile(rs.getString("ofile"))
 						.build();
-				System.out.println(dto);
 				lists.add(dto);
 			}
 		} catch (SQLException e) {

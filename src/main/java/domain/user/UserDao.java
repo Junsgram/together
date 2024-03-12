@@ -165,7 +165,7 @@ public class UserDao {
 	//회원정보 수정 메소드
 	public int editMember(EditReqDto editDto) {
 		int result = 0;
-		String query = "update member set pw1=?, pw2=?, email=?, call1=?, call2=?, call3=?, zipcode=?, addr1=?, addr2=?, ofile=?, dogname=?, birthday=? username=? where id=?";
+		String query = "update member set pw1=?, pw2=?, email=?, call1=?, call2=?, call3=?, zipcode=?, addr1=?, addr2=?, ofile=?, dogname=?, birthday=?, username=? where id=?";
 		try {
 			psmt = conn.prepareStatement(query);
 			psmt.setString(1, editDto.getPw1());
