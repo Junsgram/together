@@ -107,7 +107,7 @@ public class DiaryDAO {
 						.title(rs.getString("title"))
 						.id(rs.getString("id"))
 						.scontent(rs.getString("scontent"))
-						.lcontent(rs.getString("scontent"))
+						.lcontent(rs.getString("lcontent"))
 						.likes(rs.getInt("likes"))
 						.views(rs.getInt("views"))
 						.stars(rs.getInt("stars"))
@@ -142,6 +142,10 @@ public class DiaryDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			if(con != null && stmt != null && rs != null) {
+				DBConnection.close(con, stmt,rs);
+			}
 		}
 		return result;
 	}
@@ -159,6 +163,10 @@ public class DiaryDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			if(con != null && psmt != null) {
+				DBConnection.close(con, psmt);
+			}
 		}
 		return result;
 	}

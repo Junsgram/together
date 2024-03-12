@@ -63,7 +63,6 @@ public class HouseController extends HttpServlet {
     	
     	//게시글 등록 post 요청
     	else if(cmd.equals("write_process")) {
-    		System.out.println("하우스 등록 프로세스 접근");
     		//사진 객체 생성
     		//저장경로 getServletContext()가 application을 호출
     		String savePoint = req.getServletContext().getRealPath("house/img");
@@ -99,7 +98,6 @@ public class HouseController extends HttpServlet {
     		int result = hs.regihouse(dto);
     		if(result == 1) {
     			int rownum = hs.rownum();
-    			System.out.println("등록완료");
     			req.getRequestDispatcher("house?cmd=view&num="+rownum)
     			.forward(req, res);
     		}

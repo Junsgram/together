@@ -47,8 +47,7 @@ public class HouseDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally {
+		}finally {
 			if(con != null && psmt != null) {
 				DBConnection.close(con,psmt);
 			}
@@ -72,6 +71,10 @@ public class HouseDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			if(con != null && stmt != null && rs != null) {
+				DBConnection.close(con, stmt,rs);
+			}
 		}
 		return result;
 	}

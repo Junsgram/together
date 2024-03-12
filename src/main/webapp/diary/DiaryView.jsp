@@ -125,7 +125,7 @@ function deleteComment(num) {
 			<img src="/together/diary/img/${diaryViews.ofile}"/>
 		</div>
 		<div class="contents2">
-			<p>세부설명: ${diaryViews.lcontent}</p>
+			<p>${diaryViews.lcontent}</p>
 		</div>
 	</div>
 </div>

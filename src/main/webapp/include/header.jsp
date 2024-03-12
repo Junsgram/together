@@ -83,9 +83,16 @@
 			//페이지가 로드 완료되면 장바구니 업데이트함.
 			//현재 itemlist에 해당 스크립트가 있어 itemlist페이지 집입시 작동함
 			//향후 헤더나 index 페이지로 이동 필요함.
+			<%
+				if(session.getAttribute("principal") != null ) {
+					
+			%>
 			$(document).ready(function() {
 			  getCartItemCount();
 			});
+			<%
+				}
+			%>
 			function getCartItemCount() {
 			    // AJAX를 사용하여 서버로 요청을 보내고, 장바구니 리스트의 개수를 받아옵니다.
 			    // 서버의 API 엔드포인트를 호출하여 장바구니 리스트의 개수를 가져오는 예시입니다.
@@ -107,7 +114,7 @@
 			    var cartCountElement = document.getElementById("cartCount");
 			    cartCountElement.innerText = count;
 			}
-		
+			
 		</script>
        
  

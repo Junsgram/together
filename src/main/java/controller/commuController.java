@@ -45,7 +45,6 @@ public class commuController extends HttpServlet {
     	}
     	//커뮤니티 글쓰기 포스트 요청
     	else if(cmd.equals("write_process")) {
-    		System.out.println("등록 프로세스");
     		//저장경로
     		String savePoint = req.getServletContext().getRealPath("community/img");
     		//사진크기
@@ -66,7 +65,6 @@ public class commuController extends HttpServlet {
     		String lcontent = mr.getParameter("lcontent");
     		String id = mr.getParameter("userId");
     		String address = mr.getParameter("address");
-    		System.out.println(id);
     		WriteReqDto dto = new WriteReqDto();
     		dto.setTitle(title);
     		dto.setScontent(scontent);
@@ -87,7 +85,6 @@ public class commuController extends HttpServlet {
     	}
     	//목록 페이지 
     	else if(cmd.equals("list")) {
-    		System.out.println("리스트프로세스");
     		int page = Integer.parseInt(req.getParameter("page"));
     		req.setAttribute("page", page);
     		List<ListReqDto> lists = cs.list(page);
@@ -104,7 +101,6 @@ public class commuController extends HttpServlet {
     		if(session.getAttribute("principal") != null) {
     			User id = (User) session.getAttribute("principal");
     			if(!id.getId().equals(dto.getId())) {
-        			System.out.println(id.getId() +"," + dto.getId());
         			dto.setViews(cs.visitUpdate(num));
         		}
     		}
@@ -169,7 +165,6 @@ public class commuController extends HttpServlet {
     		
     		int result = cs.edit_process(dto);
     		if (result==1) {
-    			System.out.println("수정완료");
     			req.getRequestDispatcher("commu?cmd=view&num="+dto.getNum())
     			.forward(req, res);
     		}
@@ -177,11 +172,9 @@ public class commuController extends HttpServlet {
     	
     	//게시글 삭제
     	else if(cmd.equals("delete")) {
-    		System.out.println("커뮤니티 게시글 삭제");
     		int num = Integer.parseInt(req.getParameter("num"));
     		int result = cs.delete(num);
     		if(result == 1) {
-    			System.out.println("커뮤니티 게시글 삭제 완료");
     			req.getRequestDispatcher("commu?cmd=list&page=0")
     			.forward(req, res);
     			

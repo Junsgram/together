@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import domain.cart.Cart;
 import domain.cart.dto.CartSaveReqDto;
+import domain.user.User;
 import service.CartService;
 import util.Script;
 
@@ -32,7 +33,6 @@ public class CartController extends HttpServlet {
     // 장바구니 갯수 새기
    protected void process(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException { 
 	   String cmd = req.getParameter("cmd");
-	   System.out.println("cmd값은 :" +cmd);
 	   CartService cartService = new CartService();
 	   //장바구니추가
 	   if(cmd.equals("add_cart")) {
@@ -44,9 +44,7 @@ public class CartController extends HttpServlet {
 		   Gson gson = new Gson();
 		   //data를 CartSaveReqDto클래스로 만들어라
 		   CartSaveReqDto dto = gson.fromJson(data, CartSaveReqDto.class);
-		   System.out.println(dto);
 		   int result = cartService.add_cart(dto);
-		   System.out.println("장바구니길이.");
 		   if (result == 1) {
 			    // 장바구니 등록 성공
 			    res.setContentType("application/json");
@@ -64,9 +62,9 @@ public class CartController extends HttpServlet {
 	   else if(cmd.equals("count_cart")) {
 		   // 장바구니 리스트의 개수를 가져오는 로직을 구현합니다.
 		   	HttpSession session = req.getSession();
-		   	String id = (String) session.getAttribute("userId");
-		   	System.out.println(id);
-		    int cartCount = cartService.getCartItemCount(id);
+		   			   	User id = (User) session.getAttribute("principal");
+		   
+		    int cartCount = cartService.getCartItemCount(id.getId());
 
 		    res.setContentType("application/json");
 		    res.setCharacterEncoding("UTF-8");
@@ -78,8 +76,9 @@ public class CartController extends HttpServlet {
 	   else if(cmd.equals("in_cart")) {
 		   System.out.println("장바구니 진입");
 		   HttpSession session = req.getSession();
-		   String id = (String) session.getAttribute("userId");
-		   List<Cart> cart =cartService.cart_list(id);
+		   User id = (User) session.getAttribute("principal");
+		   System.out.println("세션ㅇ 아이디 여기입니다 :" + session);
+		   List<Cart> cart =cartService.cart_list(id.getId());
 		   System.out.println(cart);
 		   req.setAttribute("carts", cart);
 		   req.getRequestDispatcher("item/cart.jsp")

@@ -44,8 +44,9 @@
 <div id="editSector">
 	<h2 id="pageTitle">다이어리 게시글 수정 페이지</h2>
 	<div >
-		<form>
-			<button class="btn btn-primary pull-right" id="form1">삭제하기</button>
+		<form method="post"
+		action="<%= request.getContextPath()%>/commu?cmd=delete&num=${dto.num}">
+			<button type = "submit" class="btn btn-primary pull-right" id="form1">삭제하기</button>
 		</form>
 		<form method="post"
 			action="<%= request.getContextPath()%>/commu?cmd=edit_process"

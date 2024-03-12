@@ -35,7 +35,7 @@
 							    <!-- House name-->
 								<h5 class="fw-bolder">${dto.title}</h5>
 								<p>${dto.scontent}</p>
-								<h6>작성자 : ${dto.id }</h6>
+								<h6>작성자 : ${sessionScope.principal.dogname }</h6>
 								<span>좋아요 : ${dto.likes}</span><span> 조회수 : ${dto.views}</span><span> 별점 : ${dto.stars}</span>
 							</div>
 						</div>

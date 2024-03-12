@@ -32,7 +32,7 @@
 	                                    <h5 class="fw-bolder">${h.title}</h5>
 	                                    <!-- Product price-->
 	                                   	<p>${h.scontent}</p>
-	                                   	<p>${h.id}</p>
+	                                   	<p>${sessionScope.principal.dogname}</p>
 	                                </div>
 	                            </div>
 	                            <!-- Product actions-->
@@ -63,7 +63,7 @@
 	                                    <h5 class="fw-bolder">${d.title}</h5>
 	                                    <!-- Product price-->
 	                                   	<p>${d.scontent}</p>
-	                                   	<p>${d.id}</p>
+	                                   	<p>${sessionScope.principal.dogname}</p>
 	                                </div>
 	                            </div>
 	                            <!-- Product actions-->
@@ -95,7 +95,7 @@
 	                                    <h5 class="fw-bolder">${c.title}</h5>
 	                                    <!-- Product price-->
 	                                   	<p>${c.scontent}</p>
-	                                   	<p>${c.id}</p>
+	                                   	<p>${sessionScope.principal.dogname}</p>
 	                                </div>
 	                            </div>
 	                            <!-- Product actions-->

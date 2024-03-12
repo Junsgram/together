@@ -19,7 +19,6 @@ public class ItemsDao {
 	public List<Items> findAll(){
 	List<Items> items = new ArrayList<Items>();
 	Connection conn = DBConnection.getConnection(); 
-	System.out.println(items);
 	String query = "select * from items";
 	ResultSet rs = null;
 	Statement stmt = null;
@@ -44,10 +43,8 @@ public class ItemsDao {
 					.ofile(rs.getString("ofile"))
 					.regidate(rs.getDate("regidate"))
 					.build();//객체리턴이 리턴이 안됨.
-			System.out.println(item);
 			//리스트에 객체 추가
 			items.add(item);
-			System.out.println(items);
 		}
 		
 	} catch (SQLException e) {
@@ -83,18 +80,17 @@ public class ItemsDao {
 		return result;
 	}
 	//디테일
-	public Items findById(String id) {
+	public Items findById(String num) {
 		Items item = null;
-		String query = "Select * from Items where id=?";
+		String query = "Select * from Items where num=?";
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
 		Connection conn = DBConnection.getConnection(); 
 		try {
 			psmt = conn.prepareStatement(query);
-			psmt.setString(1, id);
+			psmt.setString(1, num);
 			rs = psmt.executeQuery();
 			if(rs.next()){
-				item = new Items();
 				item = Items.builder()
 						.num(rs.getInt("num"))
 						.id(rs.getString("id"))
@@ -118,6 +114,7 @@ public class ItemsDao {
 		}
 		return item;
 	}
+	
 	public int deleteById(int id) {
 		int result=0;
 		String query = "delete from items where num=?";
