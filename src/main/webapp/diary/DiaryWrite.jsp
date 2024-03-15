@@ -80,7 +80,6 @@
 				<textarea rows = "10" cols = "52.5" name = "lcontent" id ="lcontent" placeholder="우리 강아지의 하루를 자세히 설명해주세요" > </textarea>
 			</p>
 			
-			
 			<div>강아지 이미지 추가
 				<br/>
 				<div id="img_box">
