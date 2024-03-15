@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,12 +16,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
+import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
 
 import domain.user.User;
 import domain.user.dto.EditReqDto;
 import domain.user.dto.JoinReqDto;
+import domain.user.dto.KakaoLoginReqDto;
 import domain.user.dto.LoginReqDto;
 import service.UserService;
 import util.Script;
@@ -38,6 +42,7 @@ public class UserController extends HttpServlet {
 		// cmd값 받기
 		String cmd = req.getParameter("cmd");
 		UserService userService = new UserService();
+		req.setCharacterEncoding("utf-8");
 
 		// 로그인 페이지 요청
 		if (cmd.equals("loginForm")) {
@@ -45,30 +50,34 @@ public class UserController extends HttpServlet {
 		}
 		// 로그인 포스트 요청
 		else if (cmd.equals("login")) {
-			String userId = req.getParameter("userId");
+			String userEmail = req.getParameter("email");
 			String userPass = req.getParameter("userPass");
 			String remember = req.getParameter("remember");
 			
+			System.out.println(userEmail);
+			System.out.println(userPass);
+			
 			LoginReqDto logDto = new LoginReqDto();
-			logDto.setId(userId);
+			logDto.setEmail(userEmail);
 			logDto.setPw2(userPass);
 			User user = userService.login(logDto);
 			HttpSession session = req.getSession();
 			if (user != null) {
 				if (remember!=null&&remember.equals("true")) {
 					//쿠키 생성 후 쿠키에 값 저장
-					Cookie cookie = new Cookie("rememberId", userId);
+					Cookie cookie = new Cookie("rememberId", userEmail);
 					//유지 시간 일주일로 설정
 					cookie.setMaxAge(60*60*24*7);
 					res.addCookie(cookie);
 				}else {
-					Cookie cookie = new Cookie("rememberId", userId);
+					Cookie cookie = new Cookie("rememberId", userEmail);
 					cookie.setMaxAge(0);
 					res.addCookie(cookie);
 				}
 			session.setAttribute("principal", user);
+			session.setAttribute("userId", userEmail);
 			System.out.println(session.getAttribute("principal"));
-			req.getRequestDispatcher("index.jsp").forward(req, res);
+			req.getRequestDispatcher("main?cmd=page").forward(req, res);
 			} else {
 				Script.back("로그인실패", res);
 			}
@@ -77,17 +86,40 @@ public class UserController extends HttpServlet {
 		else if (cmd.equals("logout")) {
 			HttpSession session = req.getSession();
 			session.removeAttribute("principal");
-			Script.alertMsg("로그아웃 되었습니다.", "/together/index.jsp", res);
+			session.removeAttribute("userId");
+			session.removeAttribute("kakao");
+			Script.alertMsg("로그아웃 되었습니다.", "main?cmd=page", res);
+
+		}
+		//카카오 로그인 요청
+		else if (cmd.equals("kakaologin")) {
+			//입력스트림 생성
+			BufferedReader br = req.getReader();
+			String data = br.readLine();
+			System.out.println("카카오로그인 data : "+data);
+			Gson gson = new Gson();
+			KakaoLoginReqDto dto = gson.fromJson(data, KakaoLoginReqDto.class);
+			User userEntity = userService.kakaoLogin(dto);
+			//출력스트림 생성
+			PrintWriter out = res.getWriter();
+			HttpSession session = req.getSession();
+			session.setAttribute("kakao", dto);
+			if (userEntity!=null) {
+				session.setAttribute("principal", userEntity);
+				out.print("ok");
+			}else {
+				out.print("fail");
+			}
 		}
 		// 회원가입 페이지 요청
 		else if (cmd.equals("joinForm")) {
 			req.getRequestDispatcher("/user/joinForm.jsp").forward(req, res);
 		}
-		// 아이디 중복 확인 요청 (ajax요청)
+		// 이메일 중복 확인 요청 (ajax요청)
 		else if (cmd.equals("userIdCheck")) {
 			BufferedReader br = req.getReader();
-			String userId = br.readLine();
-			int result = userService.idCheck(userId);
+			String email = br.readLine();
+			int result = userService.emailCheck(email);
 			PrintWriter out = res.getWriter();
 			if (result == 0) {
 				out.print("ok");
@@ -104,37 +136,40 @@ public class UserController extends HttpServlet {
 			String saveDirectory = req.getServletContext().getRealPath("user/profile_img");
 			System.out.println(saveDirectory);
 			
-			 int maxProfileSize = 1024*1000; //MultipartRequest 객체 생성
-			 //enctype="multipart"인 요청의 값 받아오기할 때는 multipartRequest객체로 해야한다.
-			 MultipartRequest multiReq = new MultipartRequest(req, saveDirectory, maxProfileSize, "utf-8"); 
+			int maxProfileSize = 1024*1000; //MultipartRequest 객체 생성
+			//enctype="multipart"인 요청의 값 받아오기할 때는 multipartRequest객체로 해야한다.
+			MultipartRequest multiReq = new MultipartRequest(req, saveDirectory, maxProfileSize, "utf-8"); 
 			 
-			 String newFileName = "default_profile_img.jpg";
-			 String fileName =multiReq.getFilesystemName("photo"); 
+			String newFileName = "default_profile_img.jpg";
+			String fileName =multiReq.getFilesystemName("photo"); 
 			
-			 if (fileName!=null) {
+			if (fileName!=null) {
 				String exe =fileName.substring(fileName.lastIndexOf(".")); 
 				//서버 컴퓨터에 저장될 사진의 파일 이름 
 				String now = new SimpleDateFormat("yyyyMMdd_Hmss").format(new Date()); 
 				newFileName = now+exe; //파일 이름 변경 
-			 }
-			 File oldFile = new File(saveDirectory+File.separator+fileName); 
-			 File newFile = new File(saveDirectory+File.separator+newFileName); 
-			 oldFile.renameTo(newFile);
+				
+			}
+			File oldFile = new File(saveDirectory+File.separator+fileName); 
+			File newFile = new File(saveDirectory+File.separator+newFileName); 
+			oldFile.renameTo(newFile);
 
 			 //다른 input값 받기 
-			 String userId = multiReq.getParameter("userId"); 
+			 
 			 String userPass1 = multiReq.getParameter("userPass1"); 
 			 String userPass2 = multiReq.getParameter("userPass2"); 
 			 String email = multiReq.getParameter("email"); 
-			 int call1 = Integer.parseInt(multiReq.getParameter("call1")); 
-			 int call2 = Integer.parseInt(multiReq.getParameter("call2")); 
-			 int call3 = Integer.parseInt(multiReq.getParameter("call3")); 
+			 String call1 = multiReq.getParameter("call1"); 
+			 String call2 = multiReq.getParameter("call2"); 
+			 String call3 = multiReq.getParameter("call3"); 
 			 String zipcode = multiReq.getParameter("zipcode"); 
 			 String addr1 = multiReq.getParameter("addr1");
 			 String addr2 = multiReq.getParameter("addr2"); 
 			 String bday = multiReq.getParameter("bday");
 			 String dogName = multiReq.getParameter("dogName");
-			  
+			 String userId = email.substring(0,email.lastIndexOf("@"));
+			 String username = multiReq.getParameter("username");
+			 
 			 //JoinReqDto객체 생성하기 
 			 JoinReqDto joinDto = new JoinReqDto();
 			 joinDto.setId(userId); 
@@ -150,59 +185,85 @@ public class UserController extends HttpServlet {
 			 joinDto.setOfile(newFileName); 
 			 joinDto.setBirthday(bday);
 			 joinDto.setDogname(dogName); 
+			 joinDto.setUsername(username);
 			 
 			 int result = userService.join(joinDto); 
 			 if (result==1) { 
-				 Script.alertMsg("회원 가입이 완료되었습니다.", "/together/index.jsp", res);
+				 Script.alertMsg("회원 가입이 완료되었습니다.", "main?cmd=page", res);
 			 }else { 
 				 Script.back("회원가입에 실패했습니다.", res); 
 			 }
 		}
-		//회원정보 수정 요청
+		//회원정보 수정 페이지 요청
 		else if (cmd.equals("editForm")) {
+			String userId = req.getParameter("userId");
+			User user = userService.editValue(userId);
+			HttpSession session = req.getSession();
+			if (user!=null) {
+				session.setAttribute("principal", user);
+			}
 			req.getRequestDispatcher("/user/editForm.jsp").forward(req, res);
 		}
+		
 		//회원정보 수정 post 요청
 		else if(cmd.equals("edit")) {
-			System.out.println("회원정보수정요청");
+			/* System.out.println("회원정보수정요청"); */
 			// 입력된 데이터 받기
 			String saveDirectory = req.getServletContext().getRealPath("user/profile_img");
-			System.out.println(saveDirectory);
+			/* System.out.println(saveDirectory); */
 			
-			 int maxProfileSize = 1024*1000; //MultipartRequest 객체 생성
-			 //enctype="multipart"인 요청의 값 받아오기할 때는 multipartRequest객체로 해야한다.
-			 MultipartRequest multiReq = new MultipartRequest(req, saveDirectory, maxProfileSize, "utf-8"); 
-			 
-			 String newFileName = "default_profile_img.jpg";
-			 String fileName =multiReq.getFilesystemName("photo"); 
-			
-			 if (fileName!=null) {
-				String exe =fileName.substring(fileName.lastIndexOf(".")); 
+			int maxProfileSize = 1024*1000; //MultipartRequest 객체 생성
+			//enctype="multipart"인 요청의 값 받아오기할 때는 multipartRequest객체로 해야한다.
+			MultipartRequest multiReq = new MultipartRequest(req, saveDirectory, maxProfileSize, "utf-8"); 
+			//기존 프로필 사진의 파일 이름 
+			/*
+			 * String originFileName = multiReq.getParameter("originPic");
+			 * System.out.println("aaaaaaa" + originFileName);
+			 */
+			String newFileName="";
+			//바꾼 프로필 사진의 파일 이름
+			String changedFileName =multiReq.getFilesystemName("photo");
+			System.out.println(changedFileName);
+			if(changedFileName==null) {
+				newFileName= multiReq.getParameter("originPic");
+			}
+			else {
+				String change_img = multiReq.getParameter("originPic");
+	    		File delete_img = new File(saveDirectory + File.separator + change_img);
+	    		if(delete_img.exists()) {
+	    			delete_img.delete();
+	    		}
+				String exe =changedFileName.substring(changedFileName.lastIndexOf(".")); 
 				//서버 컴퓨터에 저장될 사진의 파일 이름 
 				String now = new SimpleDateFormat("yyyyMMdd_Hmss").format(new Date()); 
 				newFileName = now+exe; //파일 이름 변경 
-			 }
-			 File oldFile = new File(saveDirectory+File.separator+fileName); 
-			 File newFile = new File(saveDirectory+File.separator+newFileName); 
-			 oldFile.renameTo(newFile);
-
+				
+				File oldFile = new File(saveDirectory+File.separator+changedFileName); 
+				File newFile = new File(saveDirectory+File.separator+newFileName); 
+				oldFile.renameTo(newFile);
+			}
+			
+			System.out.println(newFileName);
+			
+			
 			 //다른 input값 받기  
+			 String userId = multiReq.getParameter("userId");
 			 String userPass1 = multiReq.getParameter("userPass1"); 
 			 String userPass2 = multiReq.getParameter("userPass2"); 
 			 String email = multiReq.getParameter("email"); 
-			 int call1 = Integer.parseInt(multiReq.getParameter("call1")); 
-			 int call2 = Integer.parseInt(multiReq.getParameter("call2")); 
-			 int call3 = Integer.parseInt(multiReq.getParameter("call3")); 
+			 String call1 = multiReq.getParameter("call1"); 
+			 String call2 = multiReq.getParameter("call2"); 
+			 String call3 = multiReq.getParameter("call3"); 
 			 String zipcode = multiReq.getParameter("zipcode"); 
 			 String addr1 = multiReq.getParameter("addr1");
 			 String addr2 = multiReq.getParameter("addr2"); 
 			 String bday = multiReq.getParameter("bday");
 			 String dogName = multiReq.getParameter("dogName");
 			  
-			 //JoinReqDto객체 생성하기 
+			 //EditReqDto객체 생성하기 
 			 EditReqDto editDto = new EditReqDto();
-
- 
+			
+			 editDto.setId(userId);
 			 editDto.setPw1(userPass1); 
 			 editDto.setPw2(userPass2);
 			 editDto.setEmail(email); 
@@ -217,16 +278,15 @@ public class UserController extends HttpServlet {
 			 editDto.setDogname(dogName); 
 			 
 			 int result = userService.edit(editDto); 
+			
 			 if (result==1) { 
-				 Script.alertMsg("회원 정보 수정이 완료되었습니다.", "/together/index.jsp", res);
+				 Script.alertMsg("회원 정보 수정이 완료되었습니다.", "main?cmd=page", res);
+				 
 			 }else { 
 				 Script.back("회원 정보 수정에 실패했습니다.", res); 
 			 }
 		}
-		}
-			
-
-
+	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		process(request, response);

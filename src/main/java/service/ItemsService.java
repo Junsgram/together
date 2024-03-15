@@ -20,10 +20,10 @@ public class ItemsService {
 	public Items detail(String id) {
 		return itemsDao.findById(id);
 	}
-	public int delete(String id) {
-		return itemsDao.deleteById(id);
+	public int delete(int num) {
+		return itemsDao.deleteById(num);
 	}
-	
+
 	
 
 }

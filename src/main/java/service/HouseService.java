@@ -2,7 +2,6 @@ package service;
 
 import java.util.List;
 
-import domain.board.House.House;
 import domain.board.House.HouseDAO;
 import domain.board.House.DTO.EditReqDTO;
 import domain.board.House.DTO.ListReqDTO;
@@ -21,6 +20,8 @@ public class HouseService {
 	}
 	//상세보기
 	public ViewReqDTO detail(int id) {
+		//아작스가 close되면 값을 받아올 수 없음
+		this.dao = new HouseDAO();
 		return dao.detail(id);
 	}
 	//리스트 출력
@@ -41,6 +42,18 @@ public class HouseService {
 	}
 	public int edit_process(ViewReqDTO dto) {
 		return dao.edit_process(dto);
+	}
+	//삭제하기
+	public int delete(int num) {
+		return dao.delete_process(num);
+	}
+	//조회수 증가
+	public int visitUpdate(int num) {
+		return dao.visitUpdate(num);
+	}
+	//게시글 번호 받아오기
+	public int rownum() {
+		return dao.detailNum();
 	}
 }
 
